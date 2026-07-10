@@ -63,7 +63,7 @@ namespace Kufar {
             
             string mediaStorage = imageData.at("media_storage");
             string path = imageData.at("path");
-            images.push_back("https://" + mediaStorage + ".kufar.by/v1/gallery/" + path);
+            images.push_back("https://" + mediaStorage + "1.kufar.by/v1/gallery/" + path);
         }
         
         void addURLParameter(ostringstream &ostream, const string &parameter, const string &value, const bool encodeValue = false) {
