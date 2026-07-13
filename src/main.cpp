@@ -3,6 +3,7 @@
 //  Kufar Telegram Notifier
 //
 //  Created by Macintosh on 02.06.2022.
+//  Updated by another Macintosh on 13.07.2026
 //
 
 #include <iostream>
@@ -86,6 +87,8 @@ void loadJSONConfigurationData(const json &data, ProgramConfiguration &programCo
             kufarConfiguration.subCategory = getOptionalValue<int>(query, "sub-category");
             kufarConfiguration.region = getOptionalValue<Region>(query, "region");
             kufarConfiguration.areas = getOptionalValue<vector<int>>(query, "areas");
+            kufarConfiguration.chatID = getOptionalValue<uint64_t>(query, "chat-id");
+            kufarConfiguration.trackingStartTime = getOptionalValue<time_t>(query, "start-time");
             programConfiguration.kufarConfiguration.push_back(kufarConfiguration);
             
             index += 1;
@@ -110,6 +113,8 @@ void printJSONConfigurationData(const ProgramConfiguration &programConfiguration
     for (const auto &query : programConfiguration.kufarConfiguration) {
         cout <<
         "\t- Название: " << query.tag << "\n"
+        "\t- Чат, в который будет отправлено сообщение: " << query.chatID << "\n"
+        "\t- Отравлять сообщения у которых дата не раньше: " << (query.trackingStartTime ? ctime(&query.trackingStartTime.value()) : PROPERTY_UNDEFINED.c_str()) << "\n"
         "\t- Поиск только по заголовку: " << query.onlyTitleSearch << "\n"
         "\t- Цена:\n"
             "\t\t- Минимальная: " << query.priceRange.priceMin << " BYN\n"
@@ -241,13 +246,19 @@ int main(int argc, char **argv) {
     viewedAds = programConfiguration.files.cache.contents.get<vector<int>>();
 
     while (true) {
+        time_t startTime = time(nullptr);
+        cout << "[обновление уведомлений] начало: " << ctime(&startTime);
         for (auto requestConfiguration : programConfiguration.kufarConfiguration) {
             unsigned int sentCount = 0;
             
             try {
                 for (const auto &advert : getAds(requestConfiguration)) {
                     if (!vectorContains(viewedAds, advert.id)) {
-                        cout << "[New]: Adding [Title: " << advert.title << "], [ID: " << advert.id << "], [Tag: " << advert.tag << "], [Link: " << advert.link << "]" << endl;
+                        if (advert.date < requestConfiguration.trackingStartTime) { 
+                            cout << "[FILTER]: Not sent, ad too old [Title: " << advert.title << "], [Kufar_ID: " << advert.id << "], [Tag: " << advert.tag << "], [Link: " << advert.link << "], [Chat_id: " << (advert.chatID ? advert.chatID : programConfiguration.telegramConfiguration.chatID) << "]" << endl;
+                            continue; 
+                        }
+                        cout << "[New]: Adding [Title: " << advert.title << "], [ID: " << advert.id << "], [Tag: " << advert.tag << "], [Link: " << advert.link << "], [Chat_id: " << (advert.chatID ? advert.chatID : programConfiguration.telegramConfiguration.chatID) << "]" << endl;
                         viewedAds.push_back(advert.id);
                         sentCount += 1;
 
@@ -273,6 +284,8 @@ int main(int argc, char **argv) {
             }
         }
         DEBUG_MSG("[DEBUG]: " << "(LoopDelay) Sleeping for: " << programConfiguration.loopDelaySeconds << "s.");
+        time_t endTime = time(nullptr);
+        cout << "[обновление уведомлений] время обновления: " << endTime - startTime << "c, конец: " << ctime(&endTime);
         sleep(programConfiguration.loopDelaySeconds);
     }
     return 0;

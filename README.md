@@ -118,6 +118,8 @@
       <b>sub-category</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L217">подкатегория</a>. <sup>(Опционально)</sup><br>
       <b>region</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L17">номер региона</a> для поиска объявлений. <sup>(Опционально)</sup><br>
       <b>areas</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L27">номера областей</a> для поиска объявлений. <sup>(Опционально)</sup>
+      <b>start-time</b> - время(Unix timestamp), раньше которого объявления будут игнорироваться <sup>(Опционально)</sup><br>
+      <b>chat-id</b> - чат, в который будет отправлено сообщение. В случае пропуска этого поля будет использован чат, который объявлен глобально <sup>(Опционально)</sup><br>
    </details>
    <details>
       <summary>

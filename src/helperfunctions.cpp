@@ -3,6 +3,7 @@
 //  Kufar Telegram Notifier
 //
 //  Created by Macintosh on 04.06.2022.
+//  Updated by another Macintosh on 13.07.2026
 //
 
 #include <vector>
@@ -16,6 +17,7 @@
 #include <limits.h>
 #include <iostream>
 #include <libgen.h>
+#include <cstdint> // for Linux
 
 using namespace std;
 

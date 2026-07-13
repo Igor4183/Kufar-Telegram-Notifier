@@ -3,9 +3,11 @@
 //  Kufar Telegram Notifier
 //
 //  Created by Macintosh on 04.06.2022.
+//  Updated by another Macintosh on 13.07.2026
 //
 
 #include <iostream>
+#include <cstdint> // for Linux
 #include "kufar.hpp"
 #include "telegram.hpp"
 #include "networking.hpp"
@@ -39,6 +41,8 @@ namespace Telegram {
         formattedTime.pop_back();
         
         string text = "";
+
+        uint64_t chat_ID = (ad.chatID ? ad.chatID : telegramConfiguration.chatID);
         
         if (ad.tag.has_value()) {
             text += "#" + ad.tag.value() + "\n";
@@ -53,13 +57,13 @@ namespace Telegram {
         
         string url = "https://api.telegram.org/bot" + telegramConfiguration.botToken;
         if (!ad.images.empty()) {
-            url += "/sendMediaGroup?chat_id=" + to_string(telegramConfiguration.chatID) + "&"
+            url += "/sendMediaGroup?chat_id=" + to_string(chat_ID) + "&"
                    "media=" + urlEncode(makeImageGroupJSON(ad.images, text));
         } else {
-            url += "/sendPhoto?chat_id=" + to_string(telegramConfiguration.chatID) + "&"
+            url += "/sendPhoto?chat_id=" + to_string(chat_ID) + "&"
                    "caption=" + urlEncode(text) + "&"
                    "photo=https://via.placeholder.com/1080";
-            /*url += "/sendMessage?chat_id=" + telegramConfiguration.chatID_or_Username + "&"
+            /*url += "/sendMessage?chat_id=" + chat_ID_or_Username + "&"
                    "text=" + urlEncode("[No Photo]\n\n" + text);*/
         }
         

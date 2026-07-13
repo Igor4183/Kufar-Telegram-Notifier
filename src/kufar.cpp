@@ -3,6 +3,7 @@
 //  Kufar Telegram Notifier
 //
 //  Created by Macintosh on 04.06.2022.
+//  Updated by another Macintosh on 13.07.2026
 //
 
 #include "json.hpp"
@@ -134,7 +135,8 @@ namespace Kufar {
             advert.price = stoi((string)ad.at("price_byn"));
             advert.phoneNumberIsVisible = !ad.at("phone_hidden");
             advert.link = ad.at("ad_link");
-            
+            advert.chatID = (configuration.chatID ? configuration.chatID.value() : (uint64_t)0);
+
             json accountParameters = ad.at("account_parameters");
             for (const auto &accountParameter : accountParameters) {
                 if (accountParameter.at("p") == "name") {

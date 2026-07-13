@@ -3,6 +3,7 @@
 //  Kufar Telegram Notifier
 //
 //  Created by Macintosh on 02.06.2022.
+//  Updated by another Macintosh on 13.07.2026
 //
 
 #ifndef kufar_hpp
@@ -10,6 +11,7 @@
 
 #include <vector>
 #include <optional>
+#include <cstdint> // for Linux
 
 // TODO: В некоторых местах поменять оформление с enum на struct
 
@@ -503,6 +505,7 @@ namespace Kufar {
         bool phoneNumberIsVisible;
         std::string link;
         std::vector<std::string> images;
+        std::uint64_t chatID;
     };
 
     struct PriceRange {
@@ -547,6 +550,8 @@ namespace Kufar {
         std::optional<int> subCategory;                 // Default: [undefined]
         std::optional<Region> region;                   // Default: [undefined]
         std::optional<std::vector<int>> areas;          // Default: [undefined]
+        std::optional<std::uint64_t> chatID;            // Default: [undefined]
+        std::optional<std::time_t> trackingStartTime;   // Default: [undefined]
     };
     
     std::vector<Ad> getAds(const KufarConfiguration &);

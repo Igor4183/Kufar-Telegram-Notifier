@@ -101,3 +101,5 @@ _deps
 ### Ignore bin folder
 bin/
 
+### VS code
+.vscode/
