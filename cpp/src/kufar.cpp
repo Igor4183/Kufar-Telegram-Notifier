@@ -11,6 +11,7 @@
 #include "networking.hpp"
 #include "helperfunctions.hpp"
 #include <iostream>
+#include <sstream>
 
 namespace Kufar {
 
@@ -130,12 +131,12 @@ namespace Kufar {
             }
             
             advert.title = ad.at("subject");
-            advert.id = ad.at("ad_id");
+            advert.id = to_string(ad.at("ad_id"));
             advert.date = timestampShift(zuluToTimestamp((string)ad.at("list_time")), 3);
             advert.price = stoi((string)ad.at("price_byn"));
             advert.phoneNumberIsVisible = !ad.at("phone_hidden");
             advert.link = ad.at("ad_link");
-            advert.chatID = (configuration.chatID ? configuration.chatID.value() : (uint64_t)0);
+            advert.chatID = (configuration.chatID ? configuration.chatID.value() : string(""));
 
             json accountParameters = ad.at("account_parameters");
             for (const auto &accountParameter : accountParameters) {

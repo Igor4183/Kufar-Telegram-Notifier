@@ -42,7 +42,7 @@ namespace Telegram {
         
         string text = "";
 
-        uint64_t chat_ID = (ad.chatID ? ad.chatID : telegramConfiguration.chatID);
+        string chat_ID = (ad.chatID.empty() ? telegramConfiguration.chatID : ad.chatID);
         
         if (ad.tag.has_value()) {
             text += "#" + ad.tag.value() + "\n";
@@ -57,10 +57,10 @@ namespace Telegram {
         
         string url = "https://api.telegram.org/bot" + telegramConfiguration.botToken;
         if (!ad.images.empty()) {
-            url += "/sendMediaGroup?chat_id=" + to_string(chat_ID) + "&"
+            url += "/sendMediaGroup?chat_id=" + chat_ID + "&"
                    "media=" + urlEncode(makeImageGroupJSON(ad.images, text));
         } else {
-            url += "/sendPhoto?chat_id=" + to_string(chat_ID) + "&"
+            url += "/sendPhoto?chat_id=" + chat_ID + "&"
                    "caption=" + urlEncode(text) + "&"
                    "photo=https://via.placeholder.com/1080";
             /*url += "/sendMessage?chat_id=" + chat_ID_or_Username + "&"

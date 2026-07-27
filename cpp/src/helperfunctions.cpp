@@ -21,7 +21,7 @@
 
 using namespace std;
 
-bool vectorContains(const vector<int> &vector, const int &value) {
+bool vectorContains(const vector<string> &vector, const string &value) {
     if (find(vector.begin(), vector.end(), value) != vector.end()) {
         return true;
     }
@@ -77,9 +77,10 @@ bool stringHasPrefix(const string &originalString, const string &prefix) {
     return originalString.rfind(prefix, 0) == 0;
 }
 
+#include "logger.hpp"
 void saveFile(const string &path, const string &contents) {
     // Перезапись файла [ВКЛ]
-    cout << "[Сохранение идентификаторов отправленных объявлений]" << endl;
+    Logger::info() << "[Сохранение идентификаторов отправленных объявлений]";
     ofstream ofs(path, ofstream::trunc);
     ofs << contents;
     ofs.close();

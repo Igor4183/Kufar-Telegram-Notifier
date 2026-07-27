@@ -499,14 +499,14 @@ namespace Kufar {
     struct Ad {
         std::optional<std::string> tag;
         std::string title;
-        int id;
+        std::string id;
         time_t date;
         int price;
         std::string sellerName;
         bool phoneNumberIsVisible;
         std::string link;
         std::vector<std::string> images;
-        std::uint64_t chatID;
+        std::string chatID;
     };
 
     struct PriceRange {
@@ -551,8 +551,8 @@ namespace Kufar {
         std::optional<int> subCategory;                 // Default: [undefined]
         std::optional<Region> region;                   // Default: [undefined]
         std::optional<std::vector<int>> areas;          // Default: [undefined]
-        std::optional<std::uint64_t> chatID;            // Default: [undefined]
-        std::optional<time_t> trackingStartTime;   // Default: [undefined]
+        std::optional<std::string> chatID;              // Default: [undefined]
+        std::optional<time_t> trackingStartTime;        // Default: [undefined]
     };
     
     std::vector<Ad> getAds(const KufarConfiguration &);

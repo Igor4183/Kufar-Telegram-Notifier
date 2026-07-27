@@ -28,8 +28,8 @@
       </li>
       <li>С помощью <code>cd</code> перейдите в директорию c проектом</li>
       <li>Соберите исполняемый файл с помощью:<br>
-            <code>cmake .</code><br>
-            <code>make</code>
+            <code>cmake -S cpp -B build</code><br>
+            <code>cmake --build build</code>
       </li>
    </ol>
 </details>
@@ -38,7 +38,7 @@
       <h3>macOS</h3>
    </summary>
    <details>
-      <summary>Через Xcode (через графический интерфейс)</summary>
+      <summary>Через Xcode (через графический интерфейс) upd. может не работать для версий ≥3.0</summary>
       <ol>
          <li>
             <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/releases">Загрузите</a> исходный код последней версии программы:<br>
@@ -71,8 +71,8 @@
          </li>
          <li>С помощью <code>cd</code> перейдите в директорию c проектом</li>
         <li>Соберите исполняемый файл с помощью:<br>
-            <code>cmake .</code><br>
-            <code>make</code>
+            <code>cmake -S cpp -B build</code><br>
+            <code>cmake --build build</code>
         </li>
       </ol>
    </details>
@@ -146,7 +146,7 @@
    </details>
    <details>
       <summary>
-         Вариант с автоматическим поиском файлов конфигурации (<code>kufar-configuration.json</code>) и кеша (<code>cached-data.json</code>) в папке с программой.<br><sup>(Необходимо поместить <code>kufar-configuration.json</code> и <code>cached-data.json</code> в папку с программой)</sup>
+         Вариант с автоматическим поиском файлов конфигурации (<code>kufar-configuration.json</code>) и кеша (<code>cached-data.json</code>) в папке <code>data/</code>.<br><sup>(Необходимо поместить <code>kufar-configuration.json</code> и <code>cached-data.json</code> в папку <code>data/</code>)</sup>
       </summary>
       <code>bin/Kufar-Telegram-Notifier</code>
    </details>

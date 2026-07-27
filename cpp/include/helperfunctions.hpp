@@ -8,24 +8,6 @@
 #ifndef helperfunctions_hpp
 #define helperfunctions_hpp
 
-/**
-Определение состояния вывода отладочных
-сообщений на экран в зависимости от типа
-сборки программы
- */
-
-#ifdef DEBUG
-    #define DEBUG_MSG(str) do { std::cout << str << std::endl; } while( false )
-#else
-    #define DEBUG_MSG(str) do { } while ( false )
-#endif
-
-#if defined(WIN32) || defined(_WIN32)
-    #define PATH_SEPARATOR '\\'
-#else
-    #define PATH_SEPARATOR '/'
-#endif
-
 #include <optional>
 #include "json.hpp"
 
@@ -65,9 +47,29 @@ std::ostream &operator << (std::ostream &os, std::optional<T> const &opt) {
 }
 
 /**
+Определение состояния вывода отладочных
+сообщений на экран в зависимости от типа
+сборки программы
+ */
+
+#include "logger.hpp"
+#ifdef DEBUG
+   
+    #define DEBUG_MSG(str) do { std::Logger::debug() << str; } while( false )
+#else
+    #define DEBUG_MSG(str) do { } while ( false )
+#endif
+
+#if defined(WIN32) || defined(_WIN32)
+    #define PATH_SEPARATOR '\\'
+#else
+    #define PATH_SEPARATOR '/'
+#endif
+
+/**
   Проверка вектора на наличие заданного значения
  */
-bool vectorContains(const std::vector<int> &, const int &);
+bool vectorContains(const std::vector<std::string> &, const std::string &);
 
 /**
   Проверка на существование файла
