@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0...3.5)
 
 project(
     Kufar-Telegram-Notifier-by-Mihalkin
-    VERSION 2.7.0
+    VERSION 3.0.0
 )
 
 set(CMAKE_CXX_STANDARD 20)

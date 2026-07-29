@@ -34,9 +34,9 @@ LogStream::~LogStream(){
 }
 
 void Logger::init(){
-    std::filesystem::create_directories("data/logs/");
+    std::filesystem::create_directories("data/logs_cpp/");
     Logger::fileName = getCurrentTime() + ".log";
-    Logger::path = "data/logs/" + Logger::fileName;
+    Logger::path = "data/logs_cpp/" + Logger::fileName;
 
     Logger::file.open(Logger::path);
     if (!file.is_open()){

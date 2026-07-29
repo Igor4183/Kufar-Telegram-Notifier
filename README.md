@@ -1,10 +1,38 @@
 <h1>Kufar Telegram Notifier</h1>
-<b>Kufar Telegram Notifier</b> - бот, который раз в заданное время ведет опрос официального Kufar API для поиска новых объявлений по заданным ключевым словам для последующей отправки результатов в Telegram чат.<br>
-Использование данного бота предусматривается только для ознакомительных целей.<br><br>
+<p>
+   <b>Kufar Telegram Notifier</b> — проект, состоящий из двух частей:
+</p>
+
+<ul>
+   <li>
+      <b>C++ сервис</b> — периодически опрашивает официальное API Kufar,
+      выполняет поиск новых объявлений и отправляет результаты в Telegram.
+   </li>
+   <li>
+      <b>Python Telegram Bot</b> — предназначен для удобного управления
+      конфигурацией поисковых запросов через Telegram-интерфейс без ручного
+      редактирования JSON-файлов.
+   </li>
+</ul>
+<p>
+   Для стандартного использования проекта достаточно настроить файл
+   <code>kufar-configuration.json</code> и запустить C++ сервис.
+   Установка Python-компонента не является обязательной — он предназначен
+   для упрощения настройки поисковых запросов через Telegram и может быть
+   использован в качестве удобного графического интерфейса управления конфигурацией.
+</p><br><br>
 <pre>Если Вы являетесь администрацией Kufar и у Вас имеются претензии к данному проекту - обращайтесь в раздел «<i>Issues</i>» для обратной связи.</pre>
 <p align="center">
    <img src="https://user-images.githubusercontent.com/83237609/180989226-ec24b7d5-63ea-4ed5-9830-dd40d27ee30d.png" width="600"/>
 </p>
+<h2>Требования</h2>
+
+<ul>
+   <li>C++20 совместимый компилятор</li>
+   <li>CMake версии 3.5+</li>
+   <li>Python 3.10+</li>
+   <li>Telegram Bot Token</li>
+</ul>
 <h2>Инструкция по сборке</h2>
 <details>
    <summary>
@@ -77,6 +105,61 @@
       </ol>
    </details>
 </details>
+<h2>Python Telegram UI</h2>
+
+Python-часть проекта представляет собой Telegram-бота для удобного управления файлом <code>kufar-configuration.json</code>. Она позволяет создавать, изменять и удалять поисковые запросы без ручного редактирования JSON-файла.
+
+<details>
+   <summary>
+      Запуск
+   </summary>
+   <ol>
+      <li>
+         Перейдите в директорию <code>python/</code>
+      </li>
+      <li>
+         Создайте виртуальное окружение:
+         <br>
+         <code>python3 -m venv .venv</code>
+      </li>
+      <li>
+         Активируйте его:
+         <br>
+         <b>Linux / macOS</b><br>
+         <code>source .venv/bin/activate</code>
+      </li>
+      <li>
+         Установите зависимости:
+         <br>
+         <code>pip install -r requirements.txt</code>
+      </li>
+      <li>
+         Запустите бота:
+         <br>
+         <code>python3 main.py</code>
+      </li>
+   </ol>
+</details>
+<h2>Структура проекта</h2>
+
+<details>
+   <summary>
+      Дерево проекта
+   </summary>
+
+<pre>
+.
+├── cpp/            # C++ сервис поиска объявлений
+├── python/         # Python Telegram Bot для управления конфигурацией
+├── data/           # Файлы конфигурации и кэш в виде логов
+├── build/          # Файлы сборки CMake
+├── bin/            # Скомпилированные исполняемые файлы
+├── README.md
+├── .gitignore
+└── LICENSE
+</pre>
+
+</details>
 <h2>Конфигурация программы</h2>
 <details>
    <summary>
@@ -91,35 +174,36 @@
    </details>
    <details>
       <summary>
-         Queries
+         Queries <sup>(все поля - опциональны)</sup>
       </summary>
-      <b>tag</b> - поисковой запрос. <sup>(Опционально)</sup><br>
-      <b>only-title-search</b> - осуществление поиска только в заголовках. <sup>(Опционально)</sup>
+      <b>tag</b> - поисковой запрос. <sup>(text)</sup><br>
+      <b>only-title-search</b> - осуществление поиска только в заголовках. <sup>(true/false)</sup>
       <details>
          <summary>
-            Price <sup>(Опционально)</sup>
+            Price
          </summary>
-         <b>min</b> - минимальная цена (целочисленное значение в BYN). <sup>(Опционально)</sup><br>
-         <b>max</b> - максимальная цена (целочисленное значение в BYN). <sup>(Опционально)</sup>
+         <b>min</b> - минимальная цена (целочисленное значение в BYN).<br>
+         <b>max</b> - максимальная цена (целочисленное значение в BYN).<br>
+         <b>Пример:</b> "price": {"min": 0, "max": 800}         
       </details>
-      <b>language</b> - язык. <sup>(Опционально)</sup><br>
-      <b>limit</b> - ограничение на количество получаемых объявлений за один запрос. <sup>(Опционально)</sup><br>
-      <b>currency</b> - валюта <sup>(Опционально)</sup><br>
-      <b>condition</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L515">состояние</a> (новое / б/y). <sup>(Опционально)</sup><br>
-      <b>seller-type</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L520">тип продавца</a> (частное лицо / компания). <sup>(Опционально)</sup><br>
-      <b>kufar-delivery-required</b> - только с Kufar Доставкой. <sup>(Опционально)</sup><br>
-      <b>kufar-payment-required</b> - только с Kufar Оплатой. <sup>(Опционально)</sup><br>
-      <b>kufar-halva-required</b> - только с Kufar Рассрочкой (Халва). <sup>(Опционально)</sup><br>
-      <b>only-with-photos</b> - только с фото. <sup>(Опционально)</sup><br>
-      <b>only-with-videos</b> - только с видео. <sup>(Опционально)</sup><br>
-      <b>only-with-exchange-available</b> - только с возможностью обмена. <sup>(Опционально)</sup><br>
-      <b>sort-type</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L525">тип сортировки</a>. <sup>(Опционально)</sup><br>
-      <b>category</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L193">категория</a>. <sup>(Опционально)</sup><br>
-      <b>sub-category</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L217">подкатегория</a>. <sup>(Опционально)</sup><br>
-      <b>region</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L17">номер региона</a> для поиска объявлений. <sup>(Опционально)</sup><br>
-      <b>areas</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L27">номера областей</a> для поиска объявлений. <sup>(Опционально)</sup>
-      <b>start-time</b> - время(Unix timestamp), раньше которого объявления будут игнорироваться <sup>(Опционально)</sup><br>
-      <b>chat-id</b> - чат, в который будет отправлено сообщение. В случае пропуска этого поля будет использован чат, который объявлен глобально <sup>(Опционально)</sup><br>
+      <b>language</b> - язык. <sup>(text)</sup><br>
+      <b>limit</b> - ограничение на количество получаемых объявлений за один запрос. <sup>(int)</sup><br>
+      <b>currency</b> - валюта <sup>(text: BYR)</sup><br>
+      <b>condition</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L515">состояние</a> (новое / б/y = 1 / 2).<br>
+      <b>seller-type</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L520">тип продавца</a> (частное лицо / компания = 0 / 1).<br>
+      <b>kufar-delivery-required</b> - только с Kufar Доставкой. <sup>(true/false)</sup><br>
+      <b>kufar-payment-required</b> - только с Kufar Оплатой. <sup>(true/false)</sup><br>
+      <b>kufar-halva-required</b> - только с Kufar Рассрочкой (Халва). <sup>(true/false)</sup><br>
+      <b>only-with-photos</b> - только с фото. <sup>(true/false)</sup><br>
+      <b>only-with-videos</b> - только с видео. <sup>(true/false)</sup><br>
+      <b>only-with-exchange-available</b> - только с возможностью обмена. <sup>(true/false)</sup><br>
+      <b>sort-type</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L525">тип сортировки</a>. (убывание / возрастание = 1 / 2)<br>
+      <b>category</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L193">категория</a>. <sup>(int)</sup><br>
+      <b>sub-category</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L217">подкатегория</a>. <sup>(int)</sup><br>
+      <b>region</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L17">номер региона</a> для поиска объявлений. <sup>(int)</sup><br>
+      <b>areas</b> - <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/blob/4e5eb51e3664c5e4e96812a5e146e41087787484/include/kufar.hpp#L27">номера областей</a> для поиска объявлений. Пример: "areas": [1, 38, 4]<sup>(int)</sup><br>
+      <b>start-time</b> - время(Unix timestamp), раньше которого объявления будут игнорироваться <sup>(int)</sup><br>
+      <b>chat-id</b> - чат, в который будет отправлено сообщение. В случае пропуска этого поля будет использован чат, который объявлен глобально <sup>(text)</sup><br>
    </details>
    <details>
       <summary>

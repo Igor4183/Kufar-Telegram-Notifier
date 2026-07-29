@@ -103,3 +103,15 @@ bin/
 
 ### VS code
 .vscode/
+
+### Python
+__pycache__/
+*.pyc
+
+### logs
+logs/
+logs_cpp/
+logs_python/
+
+###CMake build
+build/

@@ -274,14 +274,15 @@ int main(int argc, char **argv) {
                 for (const auto &advert : getAds(requestConfiguration)) {
                     string curChatID = (advert.chatID.empty() ? programConfiguration.telegramConfiguration.chatID : advert.chatID);
                     if (!vectorContains(viewedAds[curChatID], advert.id)) {
+                        viewedAds[curChatID].push_back(advert.id);
+                        sentCount += 1;
+
                         if (advert.date < requestConfiguration.trackingStartTime) { 
                             Logger::info() << "[FILTER]: Not sent, ad too old [Title: " << advert.title << "], [Kufar_ID: " << advert.id << "], [Tag: " << advert.tag << "], [Link: " << advert.link << "], [Chat_id: " << curChatID << "]";
                             continue; 
                         }
+                        
                         Logger::info() << "[New]: Adding [Title: " << advert.title << "], [ID: " << advert.id << "], [Tag: " << advert.tag << "], [Link: " << advert.link << "], [Chat_id: " << curChatID << "]";
-                        viewedAds[curChatID].push_back(advert.id);
-                        sentCount += 1;
-
                         try {
                             sendAdvert(programConfiguration.telegramConfiguration, advert);
                         } catch (const exception &exc) {

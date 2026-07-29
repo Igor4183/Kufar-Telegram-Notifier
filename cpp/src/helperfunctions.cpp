@@ -17,7 +17,11 @@
 #include <limits.h>
 #include <iostream>
 #include <libgen.h>
-#include <cstdint> // for Linux
+#include <cstdint> 
+#include <sys/file.h>
+#include <fcntl.h>
+
+#include "logger.hpp"
 
 using namespace std;
 
@@ -39,9 +43,25 @@ uint64_t getFileSize(const string &path) {
 }
 
 string getTextFromFile(const string &path) {
+    int fd = open(path.c_str(), O_RDONLY);
+    if (fd == -1) {
+        Logger::error() << "(getTextFromFile) connot find file. PATH: " << path;
+        return "";
+    }
+
+    flock(fd, LOCK_SH);
     ifstream ifs(path);
-    return string((istreambuf_iterator<char>(ifs)),
-                  (istreambuf_iterator<char>()));
+
+    string result(
+        (istreambuf_iterator<char>(ifs)),
+        (istreambuf_iterator<char>())
+    );
+
+    ifs.close();
+    flock(fd, LOCK_UN);
+    close(fd);
+
+    return result;
 }
 
 time_t zuluToTimestamp(const string &zuluDate) {
