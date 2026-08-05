@@ -5,7 +5,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 def main_keyboard(query: dict) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
-    builder.button(text="Изменить заголовок", callback_data="edit_query")
+    builder.button(text="Изменить заголовок", callback_data="edit_tag")
     builder.button(text="Прочее", callback_data="other_menu")
     # builder.button(text="📍 Регион", callback_data="field_region")
     # builder.button(text="📦 Лимит", callback_data="field_limit")

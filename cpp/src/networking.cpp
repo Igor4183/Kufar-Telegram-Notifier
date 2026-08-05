@@ -31,24 +31,29 @@ namespace Networking {
 
     string getJSONFromURL(const string &url) {
         DEBUG_MSG("[URL: " << url << "]");
-        
-        //curl_global_init(CURL_GLOBAL_DEFAULT);
+
         auto curl = curl_easy_init();
         string responseString;
-        
+
         if (curl) {
             curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
             curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 1L);
             curl_easy_setopt(curl, CURLOPT_MAXREDIRS, 0L);
             curl_easy_setopt(curl, CURLOPT_TCP_KEEPALIVE, 1L);
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, 10);
-            
+
             string headerString;
             curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writeFunction);
             curl_easy_setopt(curl, CURLOPT_WRITEDATA, &responseString);
             curl_easy_setopt(curl, CURLOPT_HEADERDATA, &headerString);
-            
-            curl_easy_perform(curl);
+
+            CURLcode result = curl_easy_perform(curl);
+
+            if (result != CURLE_OK) {
+                Logger::error() << "curl_easy_perform: "
+                                << curl_easy_strerror(result);
+            }
+
             curl_easy_cleanup(curl);
             curl_global_cleanup();
             curl = NULL;

@@ -1,7 +1,8 @@
 {
     "telegram": {
         "bot-token": "1111111111:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "chat-id": "111111111"
+        "chat-id": "111111111",
+        "support-chat-id": "-1111111111111"
     },
     "queries": [
         {
@@ -47,7 +48,7 @@
         }
     ],
     "delays": {
-        "query": 10,
-        "loop": 1800
+        "query": 1,
+        "loop": 5
     }
 }

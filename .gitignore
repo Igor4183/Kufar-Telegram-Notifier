@@ -113,5 +113,16 @@ logs/
 logs_cpp/
 logs_python/
 
-###CMake build
+### CMake build
 build/
+
+### Git
+.gitkeep
+
+### Database
+bot.db
+
+###logs
+logs_cpp/
+logs_python/
+admin_logs/

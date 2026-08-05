@@ -121,6 +121,12 @@ namespace Kufar {
             
         string rawJson = getJSONFromURL(urlStream.str());
         
+        if (rawJson.empty()) {
+            Logger::warning() << "(getAds): Kufar returned empty response"
+                            << " [URL: " << urlStream.str() << "]";
+            return {};
+        }
+
         json ads = json::parse(rawJson).at("ads");
 
         for (const auto &ad : ads) {

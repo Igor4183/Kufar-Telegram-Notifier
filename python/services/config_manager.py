@@ -14,6 +14,14 @@ class ConfigManager:
         config = self.load()
         return config["telegram"]["bot-token"]
 
+    def get_support_chat_id(self) -> int:
+        config = self.load()
+        return int(config["telegram"]["support-chat-id"])
+
+    def get_admin_chat_id(self) -> int:
+        config = self.load()
+        return int(config["telegram"]["chat-id"])
+
     def load(self):
         with open(self.path, "r", encoding="utf-8") as file:
             fcntl.flock(file, fcntl.LOCK_SH)
@@ -32,11 +40,13 @@ class ConfigManager:
             file.flush()
             fcntl.flock(file, fcntl.LOCK_UN)
 
-    def get_queries(self, chat_id: str) -> list:
+    def get_queries(self, chat_id: str | None) -> list:
         config = self.load()
         result = []
         for query in config["queries"]:
-            if "chat-id" not in query:
+            if chat_id is None:
+                result.append(query)
+            elif "chat-id" not in query:
                 if config["telegram"]["chat-id"] == chat_id:
                     result.append(query)
             elif query["chat-id"] == chat_id:
@@ -64,14 +74,31 @@ class ConfigManager:
                 return
         raise IndexError("Query number out of range")
 
-    def get_query(self, chat_id: str, number: int) -> dict | None:  # number — 1-index
+    def get_query(self, number: int, chat_id: str | None = None) -> dict | None:
         config = self.load()
         current_number = 0
         for query in config["queries"]:
             owner = query.get("chat-id", config["telegram"]["chat-id"])
-            if owner != chat_id:
+            if chat_id is not None and owner != chat_id:
                 continue
             current_number += 1
             if current_number == number:
                 return query
+        raise IndexError("Query number out of range")
+
+    def update_query(self, chat_id: str, number: int, query: dict):
+        config = self.load()
+        current_number = 0
+        for index, current_query in enumerate(config["queries"]):
+            owner = current_query.get(
+                "chat-id",
+                config["telegram"]["chat-id"],
+            )
+            if owner != chat_id:
+                continue
+            current_number += 1
+            if current_number == number:
+                config["queries"][index] = query
+                self.save(config)
+                return
         raise IndexError("Query number out of range")
