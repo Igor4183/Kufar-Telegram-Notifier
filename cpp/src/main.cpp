@@ -52,7 +52,7 @@ struct ProgramConfiguration {
     int loopDelaySeconds = 30;
 };
 
-void loadJSONConfigurationData(const json &data, ProgramConfiguration &programConfiguration) {
+void  loadJSONConfigurationData(const json &data, ProgramConfiguration &programConfiguration) {
     {
         json telegramData = data.at("telegram");
         programConfiguration.telegramConfiguration.botToken = telegramData.at("bot-token");
@@ -248,6 +248,7 @@ int main(int argc, char **argv) {
 
     Logger::init();
 
+    programConfiguration.files = getFiles(argc, argv);
     try{
         viewedAds = programConfiguration.files.cache.contents.get<map<string, vector<string>>>();
     }
@@ -258,8 +259,8 @@ int main(int argc, char **argv) {
     bool flag = true;
     while (true) {
         // Logger::info() << "начало обновления уведомлений";
-        programConfiguration.files = getFiles(argc, argv);
-        loadJSONConfigurationData(programConfiguration.files.configuration.contents, programConfiguration);
+        programConfiguration.files.configuration.contents = getJSONDataFromPath(programConfiguration.files.configuration.path);
+        loadJSONConfigurationData(programConfiguration.files.configuration.contents, programConfiguration  );
         Logger::info() << "Обновлён kufar-configuration.json";
         if (flag){
             flag = false;
