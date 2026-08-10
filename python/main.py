@@ -16,7 +16,7 @@ async def main():
     dp = Dispatcher()
     database = Database()
     user_manager = UserManager(database)
-    query_manager = QueryManager(database)
+    query_manager = QueryManager(database, config_manager)
 
     dp.include_router(start.router)
     dp.include_router(settings.router)

@@ -14,7 +14,7 @@ class Database:
             self.connection = sqlite3.connect(self.path)
             self.connection.row_factory = sqlite3.Row
             self._initialize()
-            Logger.info(0, f"База данных подключена: {self.path}")
+            # Logger.info(0, f"База данных подключена: {self.path}")
 
         except sqlite3.Error as exc:
             Logger.error(0, f"Ошибка подключения к базе данных: {exc}")

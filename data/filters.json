@@ -1,0 +1,2016 @@
+{
+    "version": 1,
+    "categories": [
+        {
+            "slug": "real-estate",
+            "name": "Недвижимость",
+            "id": 1000,
+            "subcategories": [
+                {
+                    "slug": "new-buildings",
+                    "name": "Новостройки",
+                    "id": 1120
+                },
+                {
+                    "slug": "apartments",
+                    "name": "Квартиры",
+                    "id": 1010
+                },
+                {
+                    "slug": "rooms",
+                    "name": "Комнаты",
+                    "id": 1040
+                },
+                {
+                    "slug": "houses-and-cottages",
+                    "name": "Дома, агроусадьбы и коттеджи",
+                    "id": 1020
+                },
+                {
+                    "slug": "garages-and-parking-lots",
+                    "name": "Гаражи и стоянки",
+                    "id": 1030
+                },
+                {
+                    "slug": "land-plots",
+                    "name": "Участки",
+                    "id": 1080
+                },
+                {
+                    "slug": "commercial",
+                    "name": "Коммерческая",
+                    "id": 1050
+                }
+            ]
+        },
+        {
+            "slug": "cars-and-transport",
+            "name": "Авто и запчасти",
+            "id": 2000,
+            "subcategories": [
+                {
+                    "slug": "passenger-cars",
+                    "name": "Легковые авто",
+                    "id": 2010
+                },
+                {
+                    "slug": "trucks-and-buses",
+                    "name": "Грузовики и автобусы",
+                    "id": 2060
+                },
+                {
+                    "slug": "motor-vehicles",
+                    "name": "Мототехника",
+                    "id": 2030
+                },
+                {
+                    "slug": "parts-and-consumables",
+                    "name": "Запчасти, расходники",
+                    "id": 2040
+                },
+                {
+                    "slug": "tires-and-wheels",
+                    "name": "Шины, диски",
+                    "id": 2075
+                },
+                {
+                    "slug": "accessories",
+                    "name": "Аксессуары",
+                    "id": 2045
+                },
+                {
+                    "slug": "agricultural-machinery",
+                    "name": "Сельхозтехника",
+                    "id": 2080
+                },
+                {
+                    "slug": "special-machinery",
+                    "name": "Спецтехника",
+                    "id": 2090
+                },
+                {
+                    "slug": "trailers",
+                    "name": "Прицепы",
+                    "id": 2020
+                },
+                {
+                    "slug": "water-transport",
+                    "name": "Водный транспорт",
+                    "id": 2050
+                },
+                {
+                    "slug": "tools-and-equipment",
+                    "name": "Инструмент, оборудование",
+                    "id": 2070
+                }
+            ]
+        },
+        {
+            "slug": "household-appliances",
+            "name": "Бытовая техника",
+            "id": 15000,
+            "subcategories": [
+                {
+                    "slug": "kitchen-appliances",
+                    "name": "Техника для кухни",
+                    "id": 15010
+                },
+                {
+                    "slug": "large-kitchen-appliances",
+                    "name": "Крупная техника для кухни",
+                    "id": 15020
+                },
+                {
+                    "slug": "cleaning-equipment",
+                    "name": "Техника для уборки",
+                    "id": 15030
+                },
+                {
+                    "slug": "clothing-care-and-tailoring",
+                    "name": "Уход за одеждой, пошив",
+                    "id": 15040
+                },
+                {
+                    "slug": "air-conditioning-equipment",
+                    "name": "Климатическая техника",
+                    "id": 15050
+                },
+                {
+                    "slug": "beauty-and-health-equipment",
+                    "name": "Техника для красоты и здоровья",
+                    "id": 15060
+                }
+            ]
+        },
+        {
+            "slug": "computer-equipment",
+            "name": "Компьютерная техника",
+            "id": 16000,
+            "subcategories": [
+                {
+                    "slug": "laptops",
+                    "name": "Ноутбуки",
+                    "id": 16040
+                },
+                {
+                    "slug": "computers",
+                    "name": "Компьютеры",
+                    "id": 16020
+                },
+                {
+                    "slug": "monitors",
+                    "name": "Мониторы",
+                    "id": 16030
+                },
+                {
+                    "slug": "parts",
+                    "name": "Комплектующие",
+                    "id": 16010
+                },
+                {
+                    "slug": "office-equipment",
+                    "name": "Оргтехника",
+                    "id": 16050
+                },
+                {
+                    "slug": "periphery-and-accessories",
+                    "name": "Периферия и аксессуары",
+                    "id": 16060
+                },
+                {
+                    "slug": "network-equipment",
+                    "name": "Сетевое оборудование",
+                    "id": 16070
+                },
+                {
+                    "slug": "other-computer-products",
+                    "name": "Прочие компьютерные товары",
+                    "id": 16080
+                }
+            ]
+        },
+        {
+            "slug": "phones-and-tablets",
+            "name": "Телефоны и планшеты",
+            "id": 17000,
+            "subcategories": [
+                {
+                    "slug": "mobile-phones",
+                    "name": "Мобильные телефоны",
+                    "id": 17010
+                },
+                {
+                    "slug": "parts-for-phones",
+                    "name": "Комплектующие для телефонов",
+                    "id": 17020
+                },
+                {
+                    "slug": "phone-accessories",
+                    "name": "Аксессуары для телефонов",
+                    "id": 17030
+                },
+                {
+                    "slug": "telephony-and-communication",
+                    "name": "Телефония и связь",
+                    "id": 17040
+                },
+                {
+                    "slug": "tablets",
+                    "name": "Планшеты",
+                    "id": 17050
+                },
+                {
+                    "slug": "graphic-tablets",
+                    "name": "Графические планшеты",
+                    "id": 17060
+                },
+                {
+                    "slug": "electronic-books",
+                    "name": "Электронные книги",
+                    "id": 17070
+                },
+                {
+                    "slug": "smart-watches-and-fitness-bracelets",
+                    "name": "Умные часы и фитнес браслеты",
+                    "id": 17090
+                },
+                {
+                    "slug": "accessories-for-tablets-books-watches",
+                    "name": "Аксессуары для планшетов, книг, часов",
+                    "id": 17080
+                },
+                {
+                    "slug": "headphones",
+                    "name": "Наушники",
+                    "id": 5100
+                }
+            ]
+        },
+        {
+            "slug": "electronics",
+            "name": "Электроника",
+            "id": 5000,
+            "subcategories": [
+                {
+                    "slug": "audio-equipment",
+                    "name": "Аудиотехника",
+                    "id": 5020
+                },
+                {
+                    "slug": "headphones",
+                    "name": "Наушники",
+                    "id": 5100
+                },
+                {
+                    "slug": "tv-and-video-equipment",
+                    "name": "ТВ и видеотехника",
+                    "id": 5060
+                },
+                {
+                    "slug": "photo-equipment-and-optics",
+                    "name": "Фототехника и оптика",
+                    "id": 5070
+                },
+                {
+                    "slug": "games-and-consoles",
+                    "name": "Игры и приставки",
+                    "id": 5040
+                }
+            ]
+        },
+        {
+            "slug": "womens-wardrobe",
+            "name": "Женский гардероб",
+            "id": 8000,
+            "subcategories": [
+                {
+                    "slug": "premium-clothing",
+                    "name": "Премиум одежда 💎",
+                    "id": 8110
+                },
+                {
+                    "slug": "womens-clothing",
+                    "name": "Женская одежда",
+                    "id": 8080
+                },
+                {
+                    "slug": "womens-shoes",
+                    "name": "Женская обувь",
+                    "id": 8100
+                },
+                {
+                    "slug": "womens-accessories",
+                    "name": "Женские аксессуары",
+                    "id": 8020
+                },
+                {
+                    "slug": "repair-and-sewing-clothes",
+                    "name": "Ремонт и пошив одежды",
+                    "id": 13160
+                },
+                {
+                    "slug": "clothes-for-pregnant-women",
+                    "name": "Одежда для беременных",
+                    "id": 12120
+                }
+            ]
+        },
+        {
+            "slug": "mens-wardrobe",
+            "name": "Мужской гардероб",
+            "id": 19000,
+            "subcategories": [
+                {
+                    "slug": "mens-clothing",
+                    "name": "Мужская одежда",
+                    "id": 19010
+                },
+                {
+                    "slug": "mens-shoes",
+                    "name": "Мужская обувь",
+                    "id": 19020
+                },
+                {
+                    "slug": "mens-accessories",
+                    "name": "Мужские аксессуары",
+                    "id": 19030
+                }
+            ]
+        },
+        {
+            "slug": "beauty-and-health",
+            "name": "Красота и здоровье",
+            "id": 18000,
+            "subcategories": [
+                {
+                    "slug": "decorative-cosmetics",
+                    "name": "Декоративная косметика",
+                    "id": 18010
+                },
+                {
+                    "slug": "care-cosmetics",
+                    "name": "Уходовая косметика",
+                    "id": 18020
+                },
+                {
+                    "slug": "perfumery",
+                    "name": "Парфюмерия",
+                    "id": 18030
+                },
+                {
+                    "slug": "manicure-and-pedicure",
+                    "name": "Маникюр, педикюр",
+                    "id": 18040
+                },
+                {
+                    "slug": "hair-products",
+                    "name": "Средства для волос",
+                    "id": 18050
+                },
+                {
+                    "slug": "hygiene-products-and-depilation",
+                    "name": "Средства гигиены, депиляция",
+                    "id": 18060
+                },
+                {
+                    "slug": "eyelashes-eyebrows-and-tattoo",
+                    "name": "Ресницы и брови, татуаж",
+                    "id": 18070
+                },
+                {
+                    "slug": "cosmetic-accessories",
+                    "name": "Косметические аксессуары",
+                    "id": 18090
+                },
+                {
+                    "slug": "medical-products",
+                    "name": "Медицинские товары",
+                    "id": 18080
+                },
+                {
+                    "slug": "beauty-and-health-equipment",
+                    "name": "Техника для красоты и здоровья",
+                    "id": 15060
+                },
+                {
+                    "slug": "beauty-and-health-services",
+                    "name": "Услуги: красота и здоровье",
+                    "id": 13040
+                }
+            ]
+        },
+        {
+            "slug": "children-and-mothers",
+            "name": "Всё для детей и мам",
+            "id": 12000,
+            "subcategories": [
+                {
+                    "slug": "clothing-up-to-1-year",
+                    "name": "Одежда до 1 года",
+                    "id": 12010
+                },
+                {
+                    "slug": "clothes-for-girls",
+                    "name": "Одежда для девочек",
+                    "id": 12140
+                },
+                {
+                    "slug": "clothes-for-boys",
+                    "name": "Одежда для мальчиков",
+                    "id": 12150
+                },
+                {
+                    "slug": "accessories-for-children",
+                    "name": "Аксессуары для детей",
+                    "id": 12170
+                },
+                {
+                    "slug": "childrens-shoes",
+                    "name": "Детская обувь",
+                    "id": 12020
+                },
+                {
+                    "slug": "walkers-deck-chairs-swings",
+                    "name": "Ходунки, шезлонги, качели",
+                    "id": 12040
+                },
+                {
+                    "slug": "strollers",
+                    "name": "Коляски",
+                    "id": 12050
+                },
+                {
+                    "slug": "car-seats-and-boosters",
+                    "name": "Автокресла и бустеры",
+                    "id": 12060
+                },
+                {
+                    "slug": "feeding-and-care",
+                    "name": "Кормление и уход",
+                    "id": 12070
+                },
+                {
+                    "slug": "textile-for-children",
+                    "name": "Текстиль для детей",
+                    "id": 12160
+                },
+                {
+                    "slug": "kangaroo-bags-and-slings",
+                    "name": "Сумки-кенгуру и слинги",
+                    "id": 12080
+                },
+                {
+                    "slug": "toys-and-books",
+                    "name": "Игрушки и книги",
+                    "id": 12090
+                },
+                {
+                    "slug": "childrens-transport",
+                    "name": "Детский транспорт",
+                    "id": 12100
+                },
+                {
+                    "slug": "products-for-mothers",
+                    "name": "Товары для мам",
+                    "id": 12110
+                },
+                {
+                    "slug": "clothes-for-pregnant",
+                    "name": "Одежда для беременных",
+                    "id": 12120
+                },
+                {
+                    "slug": "other-products-for-children",
+                    "name": "Прочие товары для детей",
+                    "id": 12130
+                },
+                {
+                    "slug": "furniture-for-children",
+                    "name": "Детская мебель",
+                    "id": 21180
+                }
+            ]
+        },
+        {
+            "slug": "furniture",
+            "name": "Мебель",
+            "id": 21000,
+            "subcategories": [
+                {
+                    "slug": "banquet-and-ottomans",
+                    "name": "Банкетки, пуфики",
+                    "id": 21010
+                },
+                {
+                    "slug": "hangers-and-hallways",
+                    "name": "Вешалки, прихожие",
+                    "id": 21020
+                },
+                {
+                    "slug": "furniture-for-children",
+                    "name": "Детская мебель",
+                    "id": 21180
+                },
+                {
+                    "slug": "dressers",
+                    "name": "Комоды",
+                    "id": 21030
+                },
+                {
+                    "slug": "beds-and-mattresses",
+                    "name": "Кровати, матрасы",
+                    "id": 21040
+                },
+                {
+                    "slug": "kitchens",
+                    "name": "Кухни",
+                    "id": 21050
+                },
+                {
+                    "slug": "kitchen-corners",
+                    "name": "Кухонные уголки",
+                    "id": 21060
+                },
+                {
+                    "slug": "cushioned-furniture",
+                    "name": "Мягкая мебель",
+                    "id": 21070
+                },
+                {
+                    "slug": "shelves-racks-lockers",
+                    "name": "Полки, стеллажи, шкафчики",
+                    "id": 21090
+                },
+                {
+                    "slug": "sleeping-headsets",
+                    "name": "Спальные гарнитуры",
+                    "id": 21100
+                },
+                {
+                    "slug": "walls-sections-modules",
+                    "name": "Стенки, секции, модули",
+                    "id": 21110
+                },
+                {
+                    "slug": "tables-and-dining-groups",
+                    "name": "Столы и обеденные группы",
+                    "id": 21120
+                },
+                {
+                    "slug": "chairs",
+                    "name": "Стулья",
+                    "id": 21130
+                },
+                {
+                    "slug": "cabinets-and-cupboards",
+                    "name": "Тумбы, буфеты",
+                    "id": 21140
+                },
+                {
+                    "slug": "wardrobes",
+                    "name": "Шкафы",
+                    "id": 21150
+                },
+                {
+                    "slug": "furniture-accessories-and-components",
+                    "name": "Мебельная фурнитура и составляющие",
+                    "id": 21160
+                },
+                {
+                    "slug": "other-furniture",
+                    "name": "Прочая мебель",
+                    "id": 21170
+                }
+            ]
+        },
+        {
+            "slug": "everything-for-home",
+            "name": "Всё для дома",
+            "id": 3000,
+            "subcategories": [
+                {
+                    "slug": "interior-items-and-mirrors",
+                    "name": "Предметы интерьера, зеркала",
+                    "id": 3060
+                },
+                {
+                    "slug": "curtains-blinds-and-cornices",
+                    "name": "Шторы, жалюзи, карнизы",
+                    "id": 3150
+                },
+                {
+                    "slug": "textiles-and-carpets",
+                    "name": "Текстиль и ковры",
+                    "id": 3160
+                },
+                {
+                    "slug": "lighting",
+                    "name": "Освещение",
+                    "id": 3170
+                },
+                {
+                    "slug": "household-goods",
+                    "name": "Хозяйственные товары",
+                    "id": 3110
+                },
+                {
+                    "slug": "tableware-and-kitchen-accessories",
+                    "name": "Посуда и кухонные аксессуары",
+                    "id": 3100
+                },
+                {
+                    "slug": "indoor-plants",
+                    "name": "Комнатные растения",
+                    "id": 3120
+                },
+                {
+                    "slug": "household-services",
+                    "name": "Бытовые услуги",
+                    "id": 13020
+                },
+                {
+                    "slug": "furniture-repair",
+                    "name": "Ремонт мебели",
+                    "id": 13180
+                }
+            ]
+        },
+        {
+            "slug": "repair-and-building",
+            "name": "Ремонт и стройка",
+            "id": 14000,
+            "subcategories": [
+                {
+                    "slug": "construction-tools",
+                    "name": "Строительный инструмент",
+                    "id": 14010
+                },
+                {
+                    "slug": "construction-equipment",
+                    "name": "Строительное оборудование",
+                    "id": 14180
+                },
+                {
+                    "slug": "plumbing-and-heating",
+                    "name": "Сантехника и отопление",
+                    "id": 14020
+                },
+                {
+                    "slug": "building-materials",
+                    "name": "Стройматериалы",
+                    "id": 14030
+                },
+                {
+                    "slug": "finishing-materials",
+                    "name": "Отделочные материалы",
+                    "id": 14040
+                },
+                {
+                    "slug": "windows-and-doors",
+                    "name": "Окна и двери",
+                    "id": 14050
+                },
+                {
+                    "slug": "houses-log-cabins-and-structures",
+                    "name": "Дома, срубы и сооружения",
+                    "id": 14080
+                },
+                {
+                    "slug": "gates-and-fences",
+                    "name": "Ворота, заборы",
+                    "id": 14090
+                },
+                {
+                    "slug": "power-supply",
+                    "name": "Электроснабжение",
+                    "id": 14100
+                },
+                {
+                    "slug": "personal-protective-equipment",
+                    "name": "Средства индивидуальной защит",
+                    "id": 14190
+                },
+                {
+                    "slug": "other-for-repair-and-construction",
+                    "name": "Прочее для ремонта и стройки",
+                    "id": 14060
+                }
+            ]
+        },
+        {
+            "slug": "garden",
+            "name": "Сад и огород",
+            "id": 10000,
+            "subcategories": [
+                {
+                    "slug": "garden-furniture-and-swimming-pools",
+                    "name": "Садовая мебель и бассейны",
+                    "id": 10010
+                },
+                {
+                    "slug": "barbecues-accessories-and-fuel",
+                    "name": "Мангалы, аксессуары, топливо",
+                    "id": 10100
+                },
+                {
+                    "slug": "tillers-and-cultivators",
+                    "name": "Мотоблоки и культиваторы",
+                    "id": 10110
+                },
+                {
+                    "slug": "garden-equipment",
+                    "name": "Садовая техника",
+                    "id": 10030
+                },
+                {
+                    "slug": "garden-tools",
+                    "name": "Садовый инвентарь",
+                    "id": 10050
+                },
+                {
+                    "slug": "greenhouses",
+                    "name": "Теплицы и парники",
+                    "id": 10040
+                },
+                {
+                    "slug": "plants-seedlings-and-seeds",
+                    "name": "Растения, рассада и семена",
+                    "id": 10020
+                },
+                {
+                    "slug": "fertilizers-and-agrochemicals",
+                    "name": "Удобрения и агрохимия",
+                    "id": 10060
+                },
+                {
+                    "slug": "everything-for-the-beekeeper",
+                    "name": "Все для пчеловода",
+                    "id": 10070
+                },
+                {
+                    "slug": "baths-household-units-and-bathrooms",
+                    "name": "Бани, хозблоки, санузлы",
+                    "id": 10090
+                },
+                {
+                    "slug": "other-for-the-garden",
+                    "name": "Прочее для сада и огорода",
+                    "id": 10080
+                }
+            ]
+        },
+        {
+            "slug": "hobbies-sports-and-tourism",
+            "name": "Хобби, спорт и туризм",
+            "id": 4000,
+            "subcategories": [
+                {
+                    "slug": "cd-dvd-and-records",
+                    "name": "CD, DVD, пластинки",
+                    "id": 4010
+                },
+                {
+                    "slug": "antiques-and-collections",
+                    "name": "Антиквариат и коллекции",
+                    "id": 4030
+                },
+                {
+                    "slug": "tickets",
+                    "name": "Билеты",
+                    "id": 4120
+                },
+                {
+                    "slug": "books-and-magazines",
+                    "name": "Книги и журналы",
+                    "id": 4040
+                },
+                {
+                    "slug": "metal-detectors",
+                    "name": "Металлоискатели",
+                    "id": 4130
+                },
+                {
+                    "slug": "musical-instruments",
+                    "name": "Музыкальные инструменты",
+                    "id": 4070
+                },
+                {
+                    "slug": "board-games-and-puzzles",
+                    "name": "Настольные игры и пазлы",
+                    "id": 4140
+                },
+                {
+                    "slug": "hunting-and-fishing",
+                    "name": "Охота и рыбалка",
+                    "id": 4060
+                },
+                {
+                    "slug": "tourist-goods",
+                    "name": "Туристические товары",
+                    "id": 4090
+                },
+                {
+                    "slug": "radio-controlled-models",
+                    "name": "Радиоуправляемые модели",
+                    "id": 4150
+                },
+                {
+                    "slug": "handiwork",
+                    "name": "Рукоделие",
+                    "id": 4080
+                },
+                {
+                    "slug": "sport-goods",
+                    "name": "Спорттовары",
+                    "id": 4020
+                },
+                {
+                    "slug": "bicycles",
+                    "name": "Велосипеды",
+                    "id": 4050
+                },
+                {
+                    "slug": "electric-transport",
+                    "name": "Электротранспорт",
+                    "id": 4160
+                },
+                {
+                    "slug": "tourist-services",
+                    "name": "Туристические услуги",
+                    "id": 13140
+                },
+                {
+                    "slug": "other-hobbies-sports-and-tourism",
+                    "name": "Прочее в Хобби, спорт и туризм",
+                    "id": 4100
+                }
+            ]
+        },
+        {
+            "slug": "wedding-and-holidays",
+            "name": "Свадьба и праздники",
+            "id": 9000,
+            "subcategories": [
+                {
+                    "slug": "wedding-dresses",
+                    "name": "Свадебные платья",
+                    "id": 9020
+                },
+                {
+                    "slug": "wedding-costumes",
+                    "name": "Свадебные костюмы",
+                    "id": 9030
+                },
+                {
+                    "slug": "wedding-shoes",
+                    "name": "Свадебная обувь",
+                    "id": 9040
+                },
+                {
+                    "slug": "wedding-accessories",
+                    "name": "Свадебные аксессуары",
+                    "id": 9050
+                },
+                {
+                    "slug": "gifts-and-holiday-goods",
+                    "name": "Подарки и праздничные товары",
+                    "id": 9010
+                },
+                {
+                    "slug": "carnival-costumes",
+                    "name": "Карнавальные костюмы",
+                    "id": 9070
+                },
+                {
+                    "slug": "services-for-celebrations",
+                    "name": "Услуги для торжеств",
+                    "id": 13170
+                }
+            ]
+        },
+        {
+            "slug": "animals",
+            "name": "Животные",
+            "id": 11000,
+            "subcategories": [
+                {
+                    "slug": "pets",
+                    "name": "Домашние питомцы",
+                    "id": 11010
+                },
+                {
+                    "slug": "farm-animals",
+                    "name": "Сельхоз животные",
+                    "id": 11020
+                },
+                {
+                    "slug": "pet-products",
+                    "name": "Товары для животных",
+                    "id": 11030
+                },
+                {
+                    "slug": "animal-mating",
+                    "name": "Вязка животных",
+                    "id": 11050
+                },
+                {
+                    "slug": "services-for-animals",
+                    "name": "Услуги для животных",
+                    "id": 13110
+                }
+            ]
+        },
+        {
+            "slug": "ready-business-and-equipment",
+            "name": "Готовый бизнес и оборудование",
+            "id": 20000,
+            "subcategories": [
+                {
+                    "slug": "ready-business",
+                    "name": "Готовый бизнес",
+                    "id": 20010
+                },
+                {
+                    "slug": "business-equipment",
+                    "name": "Оборудование для бизнеса",
+                    "id": 20020
+                }
+            ]
+        },
+        {
+            "slug": "job",
+            "name": "Работа",
+            "id": 6000,
+            "subcategories": [
+                {
+                    "slug": "vacancies",
+                    "name": "Вакансии",
+                    "id": 6010
+                },
+                {
+                    "slug": "looking-for-a-job",
+                    "name": "Ищу работу",
+                    "id": 6020
+                }
+            ]
+        },
+        {
+            "slug": "services",
+            "name": "Услуги",
+            "id": 13000,
+            "subcategories": [
+                {
+                    "slug": "services-for-cars",
+                    "name": "Услуги для авто",
+                    "id": 13010
+                },
+                {
+                    "slug": "household-services",
+                    "name": "Бытовые услуги",
+                    "id": 13020
+                },
+                {
+                    "slug": "computer-services-and-internet",
+                    "name": "Компьютерные услуги, интернет",
+                    "id": 13030
+                },
+                {
+                    "slug": "beauty-and-health",
+                    "name": "Красота и здоровье",
+                    "id": 13040
+                },
+                {
+                    "slug": "nannies-and-nurses",
+                    "name": "Няни и сиделки",
+                    "id": 13050
+                },
+                {
+                    "slug": "educational-services",
+                    "name": "Образовательные услуги",
+                    "id": 13200
+                },
+                {
+                    "slug": "translator-and-secretary-services",
+                    "name": "Услуги переводчика, секретаря",
+                    "id": 13060
+                },
+                {
+                    "slug": "transportation-of-passengers-and-cargo",
+                    "name": "Перевозки пассажиров и грузов",
+                    "id": 13070
+                },
+                {
+                    "slug": "advertising-and-printing",
+                    "name": "Реклама, полиграфия",
+                    "id": 13080
+                },
+                {
+                    "slug": "construction-works",
+                    "name": "Строительные работы",
+                    "id": 13090
+                },
+                {
+                    "slug": "apartment-and-house-renovation",
+                    "name": "Ремонт квартиры, дома",
+                    "id": 13190
+                },
+                {
+                    "slug": "furniture-repair",
+                    "name": "Ремонт мебели",
+                    "id": 13180
+                },
+                {
+                    "slug": "repair-and-tailoring",
+                    "name": "Ремонт и пошив одежды",
+                    "id": 13160
+                },
+                {
+                    "slug": "garden-and-landscaping",
+                    "name": "Сад, благоустройство",
+                    "id": 13100
+                },
+                {
+                    "slug": "services-for-animals",
+                    "name": "Услуги для животных",
+                    "id": 13110
+                },
+                {
+                    "slug": "services-for-celebrations",
+                    "name": "Услуги для торжеств",
+                    "id": 13170
+                },
+                {
+                    "slug": "photo-and-video-shooting",
+                    "name": "Фото и видеосъемка",
+                    "id": 13120
+                },
+                {
+                    "slug": "legal-services",
+                    "name": "Юридические услуги",
+                    "id": 13130
+                },
+                {
+                    "slug": "tourist-services",
+                    "name": "Туристические услуги",
+                    "id": 13140
+                },
+                {
+                    "slug": "other-services",
+                    "name": "Прочие услуги",
+                    "id": 13150
+                }
+            ]
+        },
+        {
+            "slug": "other",
+            "name": "Прочее",
+            "id": 7000,
+            "subcategories": [
+                {
+                    "slug": "lost-and-found",
+                    "name": "Бюро находок",
+                    "id": 7030
+                },
+                {
+                    "slug": "hookahs",
+                    "name": "Кальяны",
+                    "id": 7070
+                },
+                {
+                    "slug": "office-supplies",
+                    "name": "Канцелярские товары",
+                    "id": 7060
+                },
+                {
+                    "slug": "food-products",
+                    "name": "Продукты питания",
+                    "id": 7020
+                },
+                {
+                    "slug": "electronic-steam-generators",
+                    "name": "Электронные парогенераторы",
+                    "id": 7080
+                },
+                {
+                    "slug": "demand",
+                    "name": "Спрос",
+                    "id": 7040
+                },
+                {
+                    "slug": "everything-else",
+                    "name": "Все остальное",
+                    "id": 7010
+                }
+            ]
+        }
+    ],
+    "regions": [
+        {
+            "slug": "brest-obl",
+            "name": "Брестская область",
+            "id": 1,
+            "areas": [
+                {
+                    "slug": "brest",
+                    "name": "Брест",
+                    "id": 1
+                },
+                {
+                    "slug": "baranovichi",
+                    "name": "Барановичи",
+                    "id": 37
+                },
+                {
+                    "slug": "bereza",
+                    "name": "Береза",
+                    "id": 38
+                },
+                {
+                    "slug": "beloozyorsk",
+                    "name": "Белоозёрск",
+                    "id": 123
+                },
+                {
+                    "slug": "gancevichi",
+                    "name": "Ганцевичи",
+                    "id": 48
+                },
+                {
+                    "slug": "drogichin",
+                    "name": "Дрогичин",
+                    "id": 49
+                },
+                {
+                    "slug": "zhabinka",
+                    "name": "Жабинка",
+                    "id": 50
+                },
+                {
+                    "slug": "ivanovo",
+                    "name": "Иваново",
+                    "id": 51
+                },
+                {
+                    "slug": "ivacevichi",
+                    "name": "Иванцевичи",
+                    "id": 52
+                },
+                {
+                    "slug": "kamenec",
+                    "name": "Каменец",
+                    "id": 53
+                },
+                {
+                    "slug": "kobrin",
+                    "name": "Кобрин",
+                    "id": 2
+                },
+                {
+                    "slug": "luninec",
+                    "name": "Лунинец",
+                    "id": 3
+                },
+                {
+                    "slug": "lyahovichi",
+                    "name": "Ляховичи",
+                    "id": 54
+                },
+                {
+                    "slug": "malorita",
+                    "name": "Малорита",
+                    "id": 55
+                },
+                {
+                    "slug": "pinsk",
+                    "name": "Пинск",
+                    "id": 4
+                },
+                {
+                    "slug": "pruzhany",
+                    "name": "Пружаны",
+                    "id": 56
+                },
+                {
+                    "slug": "stolin",
+                    "name": "Столин",
+                    "id": 57
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Брест)",
+                    "id": 31
+                }
+            ]
+        },
+        {
+            "slug": "gomel-obl",
+            "name": "Гомельская область",
+            "id": 2,
+            "areas": [
+                {
+                    "slug": "gomel",
+                    "name": "Гомель",
+                    "id": 5
+                },
+                {
+                    "slug": "bragin",
+                    "name": "Брагин",
+                    "id": 128
+                },
+                {
+                    "slug": "buda-koshelevo",
+                    "name": "Буда-Кошелёво",
+                    "id": 58
+                },
+                {
+                    "slug": "vetka",
+                    "name": "Ветка",
+                    "id": 59
+                },
+                {
+                    "slug": "dobrush",
+                    "name": "Добруш",
+                    "id": 60
+                },
+                {
+                    "slug": "elsk",
+                    "name": "Ельск",
+                    "id": 61
+                },
+                {
+                    "slug": "zhitkovichi",
+                    "name": "Житковичи",
+                    "id": 62
+                },
+                {
+                    "slug": "zhlobin",
+                    "name": "Жлобин",
+                    "id": 6
+                },
+                {
+                    "slug": "kalinkovichi",
+                    "name": "Калинковичи",
+                    "id": 63
+                },
+                {
+                    "slug": "korma",
+                    "name": "Корма",
+                    "id": 129
+                },
+                {
+                    "slug": "lelchicy",
+                    "name": "Лельчицы",
+                    "id": 130
+                },
+                {
+                    "slug": "loev",
+                    "name": "Лоев",
+                    "id": 131
+                },
+                {
+                    "slug": "mozyr",
+                    "name": "Мозырь",
+                    "id": 7
+                },
+                {
+                    "slug": "oktyabrskij",
+                    "name": "Октябрьский",
+                    "id": 132
+                },
+                {
+                    "slug": "narovlya",
+                    "name": "Наровля",
+                    "id": 64
+                },
+                {
+                    "slug": "petrikov",
+                    "name": "Петриков",
+                    "id": 65
+                },
+                {
+                    "slug": "rechica",
+                    "name": "Речица",
+                    "id": 8
+                },
+                {
+                    "slug": "rogachev",
+                    "name": "Рогачёв",
+                    "id": 66
+                },
+                {
+                    "slug": "svetlogorsk",
+                    "name": "Светлогорск",
+                    "id": 39
+                },
+                {
+                    "slug": "hojniki",
+                    "name": "Хойники",
+                    "id": 67
+                },
+                {
+                    "slug": "chechersk",
+                    "name": "Чечерск",
+                    "id": 68
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Гомель)",
+                    "id": 32
+                }
+            ]
+        },
+        {
+            "slug": "grodno-obl",
+            "name": "Гродненская область",
+            "id": 3,
+            "areas": [
+                {
+                    "slug": "grodno",
+                    "name": "Гродно",
+                    "id": 9
+                },
+                {
+                    "slug": "berezovka",
+                    "name": "Берёзовка",
+                    "id": 69
+                },
+                {
+                    "slug": "berestovica",
+                    "name": "Берестовица",
+                    "id": 133
+                },
+                {
+                    "slug": "volkovysk",
+                    "name": "Волковыск",
+                    "id": 40
+                },
+                {
+                    "slug": "voronovo",
+                    "name": "Вороново",
+                    "id": 134
+                },
+                {
+                    "slug": "dyatlovo",
+                    "name": "Дятлово",
+                    "id": 70
+                },
+                {
+                    "slug": "zelva",
+                    "name": "Зельва",
+                    "id": 135
+                },
+                {
+                    "slug": "ive",
+                    "name": "Ивье",
+                    "id": 71
+                },
+                {
+                    "slug": "korelichi",
+                    "name": "Кореличи",
+                    "id": 136
+                },
+                {
+                    "slug": "lida",
+                    "name": "Лида",
+                    "id": 10
+                },
+                {
+                    "slug": "mosty",
+                    "name": "Мосты",
+                    "id": 72
+                },
+                {
+                    "slug": "novogrudok",
+                    "name": "Новогрудок",
+                    "id": 73
+                },
+                {
+                    "slug": "ostrovec",
+                    "name": "Островец",
+                    "id": 74
+                },
+                {
+                    "slug": "oshmyany",
+                    "name": "Ошмяны",
+                    "id": 75
+                },
+                {
+                    "slug": "svisloch",
+                    "name": "Свислочь",
+                    "id": 76
+                },
+                {
+                    "slug": "skidel",
+                    "name": "Скидель",
+                    "id": 77
+                },
+                {
+                    "slug": "slonim",
+                    "name": "Слоним",
+                    "id": 11
+                },
+                {
+                    "slug": "smorgon",
+                    "name": "Сморгонь",
+                    "id": 41
+                },
+                {
+                    "slug": "shchuchin",
+                    "name": "Щучин",
+                    "id": 78
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Гродно)",
+                    "id": 33
+                }
+            ]
+        },
+        {
+            "slug": "mogilev-obl",
+            "name": "Могилёвская область",
+            "id": 4,
+            "areas": [
+                {
+                    "slug": "mogilev",
+                    "name": "Могилёв",
+                    "id": 13
+                },
+                {
+                    "slug": "belynichi",
+                    "name": "Белыничи",
+                    "id": 137
+                },
+                {
+                    "slug": "bobrujsk",
+                    "name": "Бобруйск",
+                    "id": 12
+                },
+                {
+                    "slug": "byhov",
+                    "name": "Быхов",
+                    "id": 79
+                },
+                {
+                    "slug": "glusk",
+                    "name": "Глуск",
+                    "id": 80
+                },
+                {
+                    "slug": "gorki",
+                    "name": "Горки",
+                    "id": 42
+                },
+                {
+                    "slug": "dribin",
+                    "name": "Дрибин",
+                    "id": 138
+                },
+                {
+                    "slug": "kirovsk",
+                    "name": "Кировск",
+                    "id": 81
+                },
+                {
+                    "slug": "klimovichi",
+                    "name": "Климовичи",
+                    "id": 82
+                },
+                {
+                    "slug": "klichev",
+                    "name": "Кличев",
+                    "id": 83
+                },
+                {
+                    "slug": "krasnopole",
+                    "name": "Краснополье",
+                    "id": 139
+                },
+                {
+                    "slug": "krugloe",
+                    "name": "Круглое",
+                    "id": 140
+                },
+                {
+                    "slug": "kostyukovichi",
+                    "name": "Костюковичи",
+                    "id": 84
+                },
+                {
+                    "slug": "krichev",
+                    "name": "Кричев",
+                    "id": 43
+                },
+                {
+                    "slug": "mstislavl",
+                    "name": "Мстиславль",
+                    "id": 85
+                },
+                {
+                    "slug": "osipovichi",
+                    "name": "Осиповичи",
+                    "id": 14
+                },
+                {
+                    "slug": "slavgorod",
+                    "name": "Славгород",
+                    "id": 86
+                },
+                {
+                    "slug": "chausy",
+                    "name": "Чаусы",
+                    "id": 87
+                },
+                {
+                    "slug": "cherikov",
+                    "name": "Чериков",
+                    "id": 88
+                },
+                {
+                    "slug": "shklov",
+                    "name": "Шклов",
+                    "id": 89
+                },
+                {
+                    "slug": "hotimsk",
+                    "name": "Хотимск",
+                    "id": 141
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Могилёв)",
+                    "id": 34
+                }
+            ]
+        },
+        {
+            "slug": "minsk-obl",
+            "name": "Минская область",
+            "id": 5,
+            "areas": [
+                {
+                    "slug": "minsk-region",
+                    "name": "Минский район",
+                    "id": 142
+                },
+                {
+                    "slug": "berezino",
+                    "name": "Березино",
+                    "id": 91
+                },
+                {
+                    "slug": "borisov",
+                    "name": "Борисов",
+                    "id": 15
+                },
+                {
+                    "slug": "vilejka",
+                    "name": "Вилейка",
+                    "id": 92
+                },
+                {
+                    "slug": "volozhin",
+                    "name": "Воложин",
+                    "id": 93
+                },
+                {
+                    "slug": "dzerzhinsk",
+                    "name": "Дзержинск",
+                    "id": 94
+                },
+                {
+                    "slug": "zhodino",
+                    "name": "Жодино",
+                    "id": 44
+                },
+                {
+                    "slug": "zaslavl",
+                    "name": "Заславль",
+                    "id": 143
+                },
+                {
+                    "slug": "kleck",
+                    "name": "Клецк",
+                    "id": 95
+                },
+                {
+                    "slug": "kopyl",
+                    "name": "Копыль",
+                    "id": 96
+                },
+                {
+                    "slug": "krupki",
+                    "name": "Крупки",
+                    "id": 97
+                },
+                {
+                    "slug": "logojsk",
+                    "name": "Логойск",
+                    "id": 98
+                },
+                {
+                    "slug": "lyuban",
+                    "name": "Любань",
+                    "id": 99
+                },
+                {
+                    "slug": "marina-gorka",
+                    "name": "Марьина Горка",
+                    "id": 122
+                },
+                {
+                    "slug": "molodechno",
+                    "name": "Молодечно",
+                    "id": 16
+                },
+                {
+                    "slug": "myadel",
+                    "name": "Мядель",
+                    "id": 100
+                },
+                {
+                    "slug": "nesvizh",
+                    "name": "Несвиж",
+                    "id": 101
+                },
+                {
+                    "slug": "rudensk",
+                    "name": "Руденск",
+                    "id": 145
+                },
+                {
+                    "slug": "sluck",
+                    "name": "Слуцк",
+                    "id": 17
+                },
+                {
+                    "slug": "smolevichi",
+                    "name": "Смолевичи",
+                    "id": 102
+                },
+                {
+                    "slug": "soligorsk",
+                    "name": "Солигорск",
+                    "id": 45
+                },
+                {
+                    "slug": "starye-dorogi",
+                    "name": "Старые Дороги",
+                    "id": 103
+                },
+                {
+                    "slug": "stolbcy",
+                    "name": "Столбцы",
+                    "id": 104
+                },
+                {
+                    "slug": "uzda",
+                    "name": "Узда",
+                    "id": 105
+                },
+                {
+                    "slug": "fanipol",
+                    "name": "Фаниполь",
+                    "id": 144
+                },
+                {
+                    "slug": "cherven",
+                    "name": "Червень",
+                    "id": 106
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Минская область)",
+                    "id": 35
+                }
+            ]
+        },
+        {
+            "slug": "vitebsk-obl",
+            "name": "Витебская область",
+            "id": 6,
+            "areas": [
+                {
+                    "slug": "vitebsk",
+                    "name": "Витебск",
+                    "id": 18
+                },
+                {
+                    "slug": "beshenkovichi",
+                    "name": "Бешенковичи",
+                    "id": 125
+                },
+                {
+                    "slug": "baran",
+                    "name": "Барань",
+                    "id": 107
+                },
+                {
+                    "slug": "braslav",
+                    "name": "Браслав",
+                    "id": 108
+                },
+                {
+                    "slug": "verhnedvinsk",
+                    "name": "Верхнедвинск",
+                    "id": 109
+                },
+                {
+                    "slug": "glubokoe",
+                    "name": "Глубокое",
+                    "id": 110
+                },
+                {
+                    "slug": "gorodok",
+                    "name": "Городок",
+                    "id": 111
+                },
+                {
+                    "slug": "dokshicy",
+                    "name": "Докшицы",
+                    "id": 112
+                },
+                {
+                    "slug": "dubrovno",
+                    "name": "Дубровно",
+                    "id": 113
+                },
+                {
+                    "slug": "lepel",
+                    "name": "Лепель",
+                    "id": 114
+                },
+                {
+                    "slug": "liozno",
+                    "name": "Лиозно",
+                    "id": 115
+                },
+                {
+                    "slug": "miory",
+                    "name": "Миоры",
+                    "id": 116
+                },
+                {
+                    "slug": "novolukoml",
+                    "name": "Новолукомль",
+                    "id": 117
+                },
+                {
+                    "slug": "novopolock",
+                    "name": "Новополоцк",
+                    "id": 46
+                },
+                {
+                    "slug": "orsha",
+                    "name": "Орша",
+                    "id": 19
+                },
+                {
+                    "slug": "polock",
+                    "name": "Полоцк",
+                    "id": 20
+                },
+                {
+                    "slug": "postavy",
+                    "name": "Поставы",
+                    "id": 47
+                },
+                {
+                    "slug": "rossony",
+                    "name": "Россоны",
+                    "id": 118
+                },
+                {
+                    "slug": "senno",
+                    "name": "Сенно",
+                    "id": 119
+                },
+                {
+                    "slug": "tolochin",
+                    "name": "Толочин",
+                    "id": 120
+                },
+                {
+                    "slug": "ushachi",
+                    "name": "Ушачи",
+                    "id": 126
+                },
+                {
+                    "slug": "chashniki",
+                    "name": "Чашники",
+                    "id": 121
+                },
+                {
+                    "slug": "sharkovshchina",
+                    "name": "Шарковщина",
+                    "id": 127
+                },
+                {
+                    "slug": "shumilino",
+                    "name": "Шумилино",
+                    "id": 124
+                },
+                {
+                    "slug": "others",
+                    "name": "Другое (Витебск)",
+                    "id": 36
+                }
+            ]
+        },
+        {
+            "slug": "minsk",
+            "name": "Минск",
+            "id": 7,
+            "areas": [
+                {
+                    "slug": "centralnyj",
+                    "name": "Центральный",
+                    "id": 22
+                },
+                {
+                    "slug": "sovetskij",
+                    "name": "Советский",
+                    "id": 23
+                },
+                {
+                    "slug": "pervomajskij",
+                    "name": "Первомайский",
+                    "id": 24
+                },
+                {
+                    "slug": "partizanskij",
+                    "name": "Партизанский",
+                    "id": 25
+                },
+                {
+                    "slug": "zavodskoj",
+                    "name": "Заводской",
+                    "id": 26
+                },
+                {
+                    "slug": "leninskij",
+                    "name": "Ленинский",
+                    "id": 27
+                },
+                {
+                    "slug": "oktyabrskij",
+                    "name": "Октябрьский",
+                    "id": 28
+                },
+                {
+                    "slug": "moskovskij",
+                    "name": "Московский",
+                    "id": 29
+                },
+                {
+                    "slug": "frunzenskij",
+                    "name": "Фрунзенский",
+                    "id": 30
+                }
+            ]
+        }
+    ],
+    "item_conditions": [
+        {
+            "slug": "used",
+            "name": "Б/У",
+            "id": 1
+        },
+        {
+            "slug": "new",
+            "name": "Новое",
+            "id": 2
+        }
+    ],
+    "seller_types": [
+        {
+            "slug": "individual",
+            "name": "Частное лицо",
+            "id": 0
+        },
+        {
+            "slug": "company",
+            "name": "Компания",
+            "id": 1
+        }
+    ],
+    "sort_types": [
+        {
+            "slug": "descending",
+            "name": "По убыванию",
+            "id": 1,
+            "parameter": "prc.d"
+        },
+        {
+            "slug": "ascending",
+            "name": "По возрастанию",
+            "id": 2,
+            "parameter": "prc.a"
+        }
+    ],
+    "query_options": {
+        "fields": [
+            {
+                "slug": "tag",
+                "name": "Поисковый запрос",
+                "type": "string"
+            },
+            {
+                "slug": "only-title-search",
+                "name": "Искать только в заголовке",
+                "type": "boolean"
+            },
+            {
+                "slug": "price-range",
+                "name": "Диапазон цены",
+                "type": "range"
+            },
+            {
+                "slug": "language",
+                "name": "Язык",
+                "type": "string"
+            },
+            {
+                "slug": "limit",
+                "name": "Количество объявлений",
+                "type": "integer"
+            },
+            {
+                "slug": "currency",
+                "name": "Валюта",
+                "type": "string"
+            },
+            {
+                "slug": "condition",
+                "name": "Состояние",
+                "type": "enum",
+                "source": "item_conditions"
+            },
+            {
+                "slug": "seller-type",
+                "name": "Тип продавца",
+                "type": "enum",
+                "source": "seller_types"
+            },
+            {
+                "slug": "kufar-delivery-required",
+                "name": "Требуется доставка Kufar",
+                "type": "boolean"
+            },
+            {
+                "slug": "kufar-payment-required",
+                "name": "Требуется оплата Kufar",
+                "type": "boolean"
+            },
+            {
+                "slug": "kufar-halva-required",
+                "name": "Требуется оплата Халвой",
+                "type": "boolean"
+            },
+            {
+                "slug": "only-with-photos",
+                "name": "Только с фото",
+                "type": "boolean"
+            },
+            {
+                "slug": "only-with-videos",
+                "name": "Только с видео",
+                "type": "boolean"
+            },
+            {
+                "slug": "only-with-exchange-available",
+                "name": "Только с возможностью обмена",
+                "type": "boolean"
+            },
+            {
+                "slug": "sort-type",
+                "name": "Сортировка",
+                "type": "enum",
+                "source": "sort_types"
+            },
+            {
+                "slug": "category",
+                "name": "Категория",
+                "type": "category",
+                "source": "categories"
+            },
+            {
+                "slug": "sub-category",
+                "name": "Подкатегория",
+                "type": "subcategory"
+            },
+            {
+                "slug": "region",
+                "name": "Регион",
+                "type": "region",
+                "source": "regions"
+            },
+            {
+                "slug": "areas",
+                "name": "Районы/города",
+                "type": "area",
+                "multiple": true
+            }
+        ]
+    }
+}

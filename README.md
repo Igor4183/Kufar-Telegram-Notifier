@@ -42,78 +42,7 @@
    <li>Python 3.10+</li>
    <li>Telegram Bot Token</li>
 </ul>
-<h2>Инструкция по сборке</h2>
-<details>
-   <summary>
-      <h3>
-         Linux
-      </h3>
-   </summary>
-   <ol>
-      <li>Установите g++: <code>sudo apt-get install g++</code></li>
-      <li>
-         Установите curl: <code>sudo apt-get install curl libcurl4-gnutls-dev</code>
-      </li>
-      <li>
-         Установите make и cmake: <code>sudo apt-get install make cmake</code>
-      </li>
-      <li>
-         <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/releases">Загрузите</a> исходный код последней версии программы:<br>
-      </li>
-      <li>
-         Распакуйте архив с исходным кодом программы
-      </li>
-      <li>С помощью <code>cd</code> перейдите в директорию c проектом</li>
-      <li>Соберите исполняемый файл с помощью:<br>
-            <code>cmake -S cpp -B build</code><br>
-            <code>cmake --build build</code>
-      </li>
-   </ol>
-</details>
-<details>
-   <summary>
-      <h3>macOS</h3>
-   </summary>
-   <details>
-      <summary>Через Xcode (через графический интерфейс) upd. может не работать для версий ≥3.0</summary>
-      <ol>
-         <li>
-            <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/releases">Загрузите</a> исходный код последней версии программы:<br>
-         </li>
-         <li>
-            Распакуйте архив с исходным кодом программы
-         </li>
-         <li>
-            Откройте <code>Kufar Telegram Notifier.xcodeproj</code> в Xcode
-         </li>
-         <li>
-            В верхнем меню-баре выберите "Product" -> "Archive"
-         </li>
-         <li>
-            В новом открывшемся окне нажмите "Distribute Content" -> "Built Products" -> "Next" -> "Export"
-         </li>
-      </ol>
-   </details>
-   <details>
-      <summary>Через Xcode Command Line Tools (через консольный интерфейс)</summary>
-      <ol>
-         <li>
-            Установите Xcode Command Line Tools: <code>xcode-select —install</code>
-         </li>
-         <li>
-            <a href="https://github.com/TechUnRestricted/Kufar-Telegram-Notifier/releases">Загрузите</a> исходный код последней версии программы<br>
-         </li>
-         <li>
-            Распакуйте архив с исходным кодом программы
-         </li>
-         <li>С помощью <code>cd</code> перейдите в директорию c проектом</li>
-        <li>Соберите исполняемый файл с помощью:<br>
-            <code>cmake -S cpp -B build</code><br>
-            <code>cmake --build build</code>
-        </li>
-      </ol>
-   </details>
-</details>
+
 <h2>Python Telegram Bot</h2>
 
 <p>
@@ -125,19 +54,18 @@
 <p>Бот предоставляет следующие возможности:</p>
 
 <ul>
-   <li>создание, изменение и удаление поисковых запросов;</li>
-   <li>просмотр текущих поисковых запросов;</li>
-   <li>ограничение количества поисковых запросов для пользователей;</li>
+   <li>автоматически получать новые объявления с Kufar в Telegram боте;</li>
+   <li>создавать несколько поисковых запросов;</li>
+   <li>задавать различные параметры поиска для каждого запроса;</li>
    <li>хранение информации о пользователях в SQLite;</li>
    <li>обратная связь с разработчиком через Telegram;</li>
-   <li>ответ разработчика пользователю непосредственно из группы поддержки;</li>
+   <li>ограничивать количество запросов для пользователей Python-бота;</li>
    <li>административная панель;</li>
    <li>просмотр списка пользователей и их идентификаторов;</li>
    <li>просмотр поисковых запросов пользователей;</li>
    <li>управление индивидуальными лимитами поисковых запросов;</li>
    <li>получение текущей конфигурации программы через Telegram;</li>
    <li>просмотр и получение логов Python- и C++-частей проекта;</li>
-   <li>формирование архивов логов для их удобной передачи.</li>
 </ul>
 
 <h3>База данных</h3>
@@ -190,37 +118,6 @@
    <li>получение последних логов, логов за текущий день или всех логов в виде ZIP-архива.</li>
 </ul>
 
-<details>
-   <summary>
-      Запуск
-   </summary>
-   <ol>
-      <li>
-         Перейдите в директорию <code>python/</code>
-      </li>
-      <li>
-         Создайте виртуальное окружение:
-         <br>
-         <code>python3 -m venv .venv</code>
-      </li>
-      <li>
-         Активируйте его:
-         <br>
-         <b>Linux / macOS</b><br>
-         <code>source .venv/bin/activate</code>
-      </li>
-      <li>
-         Установите зависимости:
-         <br>
-         <code>pip install -r requirements.txt</code>
-      </li>
-      <li>
-         Запустите бота:
-         <br>
-         <code>python3 main.py</code>
-      </li>
-   </ol>
-</details>
 <h2>Структура проекта</h2>
 
 <details>
@@ -251,7 +148,8 @@
          Telegram
       </summary>
       <b>bot-token</b> - токен вашего бота, который будет отправлять сообщения.<br>
-      <b>chat-id</b> - идентификатор чата, в который будут отправляться сообщения.
+      <b>chat-id</b> - идентификатор чата, в который будут отправляться сообщения.<br>
+      <b>support-chat-id</b> - идентификатор группы, в которую будут отправляться сообщения обратной связи.(Перед запуском требуется добавить бота в группу)
    </details>
    <details>
       <summary>
@@ -302,19 +200,49 @@
 Достаточно убедиться в том, что он представляет из себя валидный JSON файл со структурой <code>[]</code> (массив).<br>
 Предназначение: хранит в себе идентификаторы отправленных объявлений для предотвращения повторной отправки при перезапуске программы.
 </details>
-<h2>Запуск:</h2>
-   <details>
-      <summary>
-         Вариант с указанием путей к файлам конфигурации и кеша.
-      </summary>
-      <code>bin/Kufar-Telegram-Notifier --config="/путь/к/kufar-configuration.json" --cache="/путь/к/cached-data.json"</code>
-   </details>
-   <details>
-      <summary>
-         Вариант с автоматическим поиском файлов конфигурации (<code>kufar-configuration.json</code>) и кеша (<code>cached-data.json</code>) в папке <code>data/</code>.<br><sup>(Необходимо поместить <code>kufar-configuration.json</code> и <code>cached-data.json</code> в папку <code>data/</code>)</sup>
-      </summary>
-      <code>bin/Kufar-Telegram-Notifier</code>
-   </details>
+
+<h2>Сборка проекта</h2>
+
+<h3>C++ часть</h3>
+
+<p>Для сборки C++ части проекта выполните из корневой директории:</p>
+<pre>
+   <<code>cmake -S cpp -B build</code><br>
+   <code>cmake --build build</code>
+</pre>
+<p>После успешной сборки исполняемый файл будет находиться в директории <code>bin/</code>.</p>
+
+<h3>Python часть</h3>
+
+<p>Перейдите в директорию <code>python/</code> и создайте виртуальное окружение:</p>
+<pre><code>cd python python3 -m venv venv</code></pre>
+
+<p>Активируйте виртуальное окружение:</p>
+<pre><code>source venv/bin/activate</code></pre>
+
+<p>Установите зависимости из <code>requirements.txt</code>:</p>
+<pre><code>pip install -r requirements.txt</code></pre>
+
+
+<h2>Запуск проекта</h2>
+
+<h3>C++ часть</h3>
+<p>После сборки C++ программу можно запустить из корневой директории проекта:</p>
+<pre>
+   <code>bin/Kufar-Telegram-Notifier</code>
+</pre>
+
+<h3>Python часть</h3>
+<p>Сначала перейдите в директорию <code>python/</code> и активируйте виртуальное окружение:</p>
+<pre>
+   <code>cd [путь-к-проекту]/python source venv/bin/activate</code>
+</pre>
+<p>После этого запустите Telegram-бота:</p>
+<pre>
+   <code>python3 main.py</code>
+</pre>
+<p>Таким образом, проект состоит из двух частей: C++-программа выполняет основную работу с поиском объявлений, а Python-бот предоставляет удобный интерфейс для настройки запросов через Telegram.</p>
+
 <p align="center">
    <img src="https://user-images.githubusercontent.com/83237609/181288185-7f9c23b0-32bf-4a1a-a3fd-168ed38255e1.png"/>
 </p>

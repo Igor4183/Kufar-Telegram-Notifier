@@ -12,30 +12,13 @@ from services.query_manager import QueryManager
 from utils.logger import Logger
 from keyboards.settings import settings_keyboard, back_to_settings_keyboard
 from states.settings import AddQuery
-from views.add_query import update_menu
+from views.settings import update_menu, get_settings_text
 
 router = Router()
 database = Database()
 config_manager = ConfigManager()
 user_manager = UserManager(database)
 query_manager = QueryManager(database)
-
-
-def get_settings_text(chat_id: int) -> str:
-    queries = config_manager.get_queries(str(chat_id))
-    max_queries = query_manager.get_max_queries(chat_id)
-
-    text = f"Поисковые запросы: {len(queries)}/{max_queries}\n"
-    if len(queries) == 0:
-        text += "У вас нет настроенных поисков."
-    else:
-        text += "Ваши поисковые запросы:\n\n"
-        for number, query in enumerate(queries, 1):
-            if "tag" in query:
-                text += f"{number}. {query['tag']}\n"
-            else:
-                text += f"{number}. [UNDEFINED]\n"
-    return text
 
 
 @router.message(Command("settings"))

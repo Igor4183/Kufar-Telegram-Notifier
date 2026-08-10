@@ -18,9 +18,9 @@ from views.admin import update_admin_menu
 router = Router()
 
 database = Database()
-user_manager = UserManager(database)
-query_manager = QueryManager(database)
 config_manager = ConfigManager()
+user_manager = UserManager(database)
+query_manager = QueryManager(database, config_manager)
 log_manager = LogManager()
 
 

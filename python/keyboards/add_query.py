@@ -1,4 +1,4 @@
-from aiogram.types import InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
@@ -6,14 +6,13 @@ def main_keyboard(query: dict) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     builder.button(text="Изменить заголовок", callback_data="edit_tag")
+    builder.button(text="📍 Регион", callback_data="edit_region")
+    builder.button(text="📂 Категории", callback_data="edit_category")
     builder.button(text="Прочее", callback_data="other_menu")
-    # builder.button(text="📍 Регион", callback_data="field_region")
-    # builder.button(text="📦 Лимит", callback_data="field_limit")
-    # builder.button(text="Только заголовок", callback_data="field_only_title")
     builder.button(text="💾 Сохранить", callback_data="save_query")
     builder.button(text="❌ Отмена", callback_data="cancel_query")
 
-    builder.adjust(1, 1, 2)
+    builder.adjust(1, 2, 1, 2)
     return builder.as_markup()
 
 
@@ -55,4 +54,40 @@ def other_keyboard(query: dict) -> InlineKeyboardMarkup:
     builder.button(text="🔙 Назад", callback_data="back")
 
     builder.adjust(1, 1, 1, 1, 1, 1)
+    return builder.as_markup()
+
+
+def areas_keyboard(
+    areas: list[dict], page: int, selected_areas: list[int], total_pages: int
+) -> InlineKeyboardMarkup:
+    builder = InlineKeyboardBuilder()
+    start = page * 8
+    page_areas = areas[start : start + 8]
+
+    for area in page_areas:
+        area_id = area["id"]
+        name = area["name"]
+        prefix = "✅ " if area_id in selected_areas else ""
+        builder.button(text=f"{prefix}{name}", callback_data=f"area:{area['slug']}")
+
+    builder.adjust(2)
+    builder.row(InlineKeyboardButton(text="🌍 Вся область", callback_data="areas_all"))
+    navigation = []
+    if page > 0:
+        navigation.append(
+            InlineKeyboardButton(text="⬅️", callback_data=f"areas_page:{page - 1}")
+        )
+    navigation.append(
+        InlineKeyboardButton(
+            text=f"{page + 1}/{total_pages}", callback_data="areas_page:current"
+        )
+    )
+    if page < total_pages - 1:
+        navigation.append(
+            InlineKeyboardButton(text="➡️", callback_data=f"areas_page:{page + 1}")
+        )
+    builder.row(*navigation)
+    builder.row(InlineKeyboardButton(text="💾 Сохранить", callback_data="save_region"))
+    builder.row(InlineKeyboardButton(text="◀️ Назад", callback_data="back_to_regions"))
+
     return builder.as_markup()
