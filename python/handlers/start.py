@@ -2,24 +2,24 @@ from aiogram import Router
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from utils.logger import Logger
 from services.database import Database
-from services.user_manager import UserManager
+from services.managers import ConfigManager, UserManager
+from utils.logger import Logger
 
 router = Router()
+
 database = Database()
-user_manager = UserManager(database)
+config_manager = ConfigManager()
+user_manager = UserManager(database, config_manager)
 
 
 @router.message(Command("start"))
 async def start_command(message: Message):
-    Logger(message.chat.id, "/start")  # type: ignore
-    user_manager.get_or_create_user(
-        message.chat.id, message.from_user.username  # type: ignore
-    )
+    Logger.info(message.chat.id, "/start")
+    user_manager.get_or_create_user(message.chat.id, message.from_user.username)  # type: ignore
     await message.answer(
         """
-<b>Kufar Telegram Notifier<\b>
+<b>Kufar Telegram Notifier</b>
 
 Бот для автоматического поиска новых объявлений на Kufar и отправки уведомлений в Telegram.
 
@@ -37,7 +37,7 @@ async def start_command(message: Message):
 
 @router.message(Command("help"))
 async def help_command(message: Message):
-    Logger(message.chat.id, "/help")  # type: ignore
+    Logger.info(message.chat.id, "/help")  # type: ignore
     await message.answer("""
 Доступные команды:
 

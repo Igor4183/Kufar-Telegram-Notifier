@@ -1,8 +1,8 @@
 {
     "telegram": {
-        "bot-token": "1111111111:AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-        "chat-id": "111111111",
-        "support-chat-id": "-1111111111111"
+        "bot-token": "1111111:AAG3AAAAAAAAAA3KjHcfs",
+        "chat-id": "1213213123",
+        "support-chat-id": "-123123131231"
     },
     "queries": [
         {
@@ -43,8 +43,16 @@
                 38,
                 4
             ],
-            "start-time": 1783965480,
-            "chat-id": "111111111"
+            "start-time": 1783965480
+        },
+        {
+            "tag": "Кроссовки",
+            "category": 19000,
+            "sub-category": 19020,
+            "only-title-search": true,
+            "start-time": 1786452052,
+            "limit": 5,
+            "chat-id": "928442831"
         }
     ],
     "delays": {

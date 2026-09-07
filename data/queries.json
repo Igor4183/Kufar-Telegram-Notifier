@@ -1,0 +1,11 @@
+[
+    {
+        "query_id": 1,
+        "only-title-search": false,
+        "only-with-photos": false
+    },
+    {
+        "only-title-search": false,
+        "query_id": 2
+    }
+]

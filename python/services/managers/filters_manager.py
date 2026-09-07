@@ -1,13 +1,15 @@
 import json
 
 from pathlib import Path
-
+from services.path_manager import PathManager
 from utils.logger import Logger
+
+path_manager = PathManager()
 
 
 class FiltersManager:
     def __init__(self):
-        self.path = Path(__file__).resolve().parents[2] / "data" / "filters.json"
+        self.path = path_manager.filters_path
         self.filters = self._load()
 
     def _load(self):

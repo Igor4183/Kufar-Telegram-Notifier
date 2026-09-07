@@ -1,4 +1,5 @@
 import time
+from typing import Any
 
 from aiogram import Router, F
 from aiogram.filters import Command, StateFilter
@@ -6,19 +7,20 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
 from services.database import Database
-from services.config_manager import ConfigManager
-from services.user_manager import UserManager
-from services.query_manager import QueryManager
+from services.managers import ConfigManager, FiltersManager, QueryManager, UserManager
+from services.processing import Scheduler
 from utils.logger import Logger
 from keyboards.settings import settings_keyboard, back_to_settings_keyboard
 from states.settings import AddQuery
 from views.settings import update_menu, get_settings_text
 
 router = Router()
+
 database = Database()
 config_manager = ConfigManager()
-user_manager = UserManager(database)
 query_manager = QueryManager(database)
+user_manager = UserManager(database, config_manager)
+filters_manager = FiltersManager()
 
 
 @router.message(Command("settings"))
@@ -36,6 +38,7 @@ async def settings_command(message: Message):
 )
 async def back_to_settings(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
 
@@ -46,52 +49,33 @@ async def back_to_settings(callback: CallbackQuery, state: FSMContext):
     await callback.message.edit_text(text, reply_markup=settings_keyboard())
 
 
-@router.callback_query(F.data == "edit_query")
-async def edit_query(callback: CallbackQuery, state: FSMContext):
-    await callback.answer()
-    if not isinstance(callback.message, Message):
-        return
-    chat_id = callback.message.chat.id
-    queries = config_manager.get_queries(str(chat_id))
-    Logger.info(chat_id, "/settings -> edit_query")
-    if not queries:
-        await callback.message.edit_text("У вас нет настроенных поисков.")
-        return
-
-    text = "✏️ Выберите запрос для изменения:\n\n"
-    for number, query in enumerate(queries, 1):
-        tag = query.get("tag", "[UNDEFINED]")
-        text += f"{number}. {tag}\n"
-    text += "\nВведите номер запроса:"
-
-    await state.update_data(
-        edit_mode=True,
-        menu_chat_id=chat_id,
-        menu_message_id=callback.message.message_id,
-    )
-    await state.set_state(AddQuery.waiting_for_edit)
-    await callback.message.edit_text(text, reply_markup=back_to_settings_keyboard())
-
-
 @router.message(AddQuery.waiting_for_edit)
 async def process_edit(message: Message, state: FSMContext):
     if message.text is None or not message.text.isdigit():
         await message.answer("Введите номер запроса.")
         return
+
     number = int(message.text)
-    queries = config_manager.get_queries(str(message.chat.id))
+    queries = query_manager.get_queries(message.chat.id)
+
     if number <= 0 or number > len(queries):
         await message.answer("❌ Нет такого номера.")
         return
-    query = queries[number - 1].copy()
+
+    selected_query = queries[number - 1]
+    query = query_manager.get_query_config(selected_query.query_id)
+
     Logger.info(
-        message.chat.id, f"/settings -> edit_query -> выбран запрос №{number}: {query}"
+        message.chat.id,
+        f"/settings -> edit_query -> выбран запрос №{number}: {selected_query.tag}",
     )
 
     await state.update_data(
         query=query,
+        query_id=selected_query.query_id,
         query_number=number,
         current_menu="main",
+        edit_mode=True,
     )
     await state.set_state(AddQuery.editing)
     await update_menu(message.bot, state)
@@ -100,43 +84,50 @@ async def process_edit(message: Message, state: FSMContext):
 @router.callback_query(F.data == "remove_query")
 async def delete_query(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
+
     if callback.message is None:
         return
-    Logger.info(callback.message.chat.id, "/settings -> remove_query")
-    queries = config_manager.get_queries(str(callback.message.chat.id))
+
+    chat_id = callback.message.chat.id
+    Logger.info(chat_id, "/settings -> remove_query")
+
+    queries = query_manager.get_queries(chat_id)
+
     if len(queries) == 0:
         await callback.message.answer("У вас нет настроенных поисков.")
-    else:
-        text = "Введите номер объявления для удаления:\n\n"
-        cnt = 0
-        for query in queries:
-            cnt += 1
-            if "tag" in query:
-                text += f"{cnt}. {query["tag"]}\n"
-            else:
-                text += f"{cnt}. [UNDEFINED]\n"
-        await callback.message.answer(text, reply_markup=back_to_settings_keyboard())
-        await state.set_state(AddQuery.waiting_for_delete)
+        return
+
+    text = "Введите номер объявления для удаления:\n\n"
+
+    for number, query in enumerate(queries, 1):
+        text += f"{number}. {query.tag}\n"
+
+    await callback.message.answer(text, reply_markup=back_to_settings_keyboard())
+    await state.set_state(AddQuery.waiting_for_delete)
 
 
 @router.message(AddQuery.waiting_for_delete)
-async def process_delete(message: Message, state: FSMContext):
+async def process_delete(message: Message, state: FSMContext, scheduler: Scheduler):
     if message.text is None or not message.text.isdigit():
         await message.answer("Введите номер.")
         return
 
     index = int(message.text)
-    config = config_manager.get_queries(str(message.chat.id))
-    if index <= 0 or index > len(config):
+    queries = query_manager.get_queries(message.chat.id)
+
+    if index <= 0 or index > len(queries):
         await message.answer("Нет такого номера.")
         return
 
+    query = queries[index - 1]
+
     Logger.info(
-        message.chat.id,
-        f"Запрос под номером {index} удалён. "
-        + str(config_manager.get_query(index, str(message.chat.id))),
+        message.chat.id, f"Запрос под номером {index} удалён. query_id={query.query_id}"
     )
-    config_manager.remove_query(str(message.chat.id), index)
+
+    query_manager.delete_query(query.query_id)
+    scheduler.remove_query(query.query_id)
+
     await state.clear()
     await message.answer("✅ Запрос удалён.")
 
@@ -144,8 +135,10 @@ async def process_delete(message: Message, state: FSMContext):
 @router.callback_query(F.data == "add_query")
 async def add_query(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
+
     if callback.message is None:
         return
+
     Logger.info(callback.message.chat.id, "/settings -> add_query")
 
     await state.update_data(edit_mode=False)
@@ -158,8 +151,12 @@ async def add_query(callback: CallbackQuery, state: FSMContext):
 @router.message(AddQuery.waiting_for_tag)
 async def process_query(message: Message, state: FSMContext):
     Logger.info(message.chat.id, f"(waiting_for_tag)введён tag: {message.text}")
-    query = {"tag": message.text}
+
+    query: dict[str, Any] = {"only-title-search": False}
+    query["tag"] = message.text
+
     menu = await message.answer("Создаю меню...")
+
     await state.update_data(
         query=query,
         current_menu="main",
@@ -175,11 +172,16 @@ async def waiting_for_value(message: Message, state: FSMContext):
     Logger.info(
         message.chat.id, f"(waiting_for_value) введено значение: {message.text}"
     )
+
     data = await state.get_data()
     field = data["editing_field"]
-    query = data["query"]
+    query: dict[str, Any] = data["query"]
 
     if field == "tag":
+        if message.text is None:
+            await message.answer("❌ Значение не может быть пустым.")
+            return
+
         query["tag"] = message.text
 
     await state.update_data(query=query)
@@ -189,12 +191,9 @@ async def waiting_for_value(message: Message, state: FSMContext):
 
 @router.callback_query(AddQuery.editing, F.data == "edit_tag")
 async def edit_tag(callback: CallbackQuery, state: FSMContext):
-    # Logger place
     if not isinstance(callback.message, Message):
         return
 
-    if callback.message is None:
-        return
     await callback.answer()
     await state.update_data(editing_field="tag")
     await state.set_state(AddQuery.waiting_for_value)
@@ -206,35 +205,50 @@ async def cancel_query(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/settings -> создание запроса отменено")
     await callback.answer()
     await state.clear()
+
     if isinstance(callback.message, Message):
         await callback.message.edit_text("❌ Создание запроса отменено.")
 
 
 @router.callback_query(AddQuery.editing, F.data == "save_query")
-async def save_query(callback: CallbackQuery, state: FSMContext):
+async def save_query(callback: CallbackQuery, state: FSMContext, scheduler: Scheduler):
     await callback.answer()
 
+    if not isinstance(callback.message, Message):
+        return
+
     data = await state.get_data()
-    query = data["query"]
+    query: dict[str, Any] = data["query"]
     chat_id = callback.from_user.id
-    data = await state.get_data()
     edit_mode = data.get("edit_mode", False)
+
     if edit_mode:
-        query_number = data["query_number"]
-        config_manager.update_query(str(chat_id), query_number, query)
-        Logger.info(chat_id, f"Изменён запрос №{query_number}: '{query['tag']}'")
+        query_id = data["query_id"]
+        updated_query = query_manager.update_query(query_id, query)
+        scheduler.add_query(updated_query)
     else:
-        query["start-time"] = int(time.time())
-        query["limit"] = (
-            5  # что-то тут надо придумать с лимитом, чтобы у меня комп не лёг и можно было бы его настраивать.
+        if not user_manager.can_add_query(chat_id):
+            await callback.message.answer("❌ Вы достигли лимита поисковых запросов.")
+            return
+
+        tag = query.get("tag")
+
+        if not isinstance(tag, str) or not tag:
+            await callback.message.answer("❌ Поисковый запрос не может быть пустым.")
+            return
+
+        created_query = query_manager.create_query(
+            chat_id, tag, query, 5, int(time.time()), 60
         )
-        query["chat-id"] = str(callback.from_user.id)  # data["menu_chat_id"]
-        config_manager.add_query(str(chat_id), query)
-        Logger.info(callback.from_user.id, f"Добавлен новый запрос '{query['tag']}'")
+        scheduler.add_query(created_query)
+
+        Logger.info(
+            chat_id,
+            f"Добавлен новый запрос '{created_query.tag}', query_id={created_query.query_id}",
+        )
 
     await state.clear()
-    if isinstance(callback.message, Message):
-        await callback.message.edit_text("✅ Запрос успешно сохранён.")
+    await callback.message.edit_text("✅ Запрос успешно сохранён.")
 
 
 @router.callback_query(AddQuery.editing, F.data == "other_menu")
@@ -303,12 +317,11 @@ async def toggle_condition(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     query = data["query"]
     query["condition"] = (query.get("condition", 0) + 1) % 3
+
     if query["condition"] == 0:
         query.pop("condition")
-    Logger.info(
-        callback.from_user.id,
-        f"/settings -> condition -> {query['condition']}",
-    )
+
+    Logger.info(callback.from_user.id, f"(toggle_condition): {query.get('condition')}")
     await state.update_data(query=query)
     await update_menu(callback.bot, state)
 
@@ -319,11 +332,12 @@ async def toggle_seller_type(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
     query = data["query"]
     query["seller-type"] = (query.get("seller-type", 2) + 1) % 3
+
     if query["seller-type"] == 2:
         query.pop("seller-type")
+
     Logger.info(
-        callback.from_user.id,
-        f"/settings -> seller-type -> {query['seller-type']}",
+        callback.from_user.id, f"/settings -> seller-type -> {query.get('seller-type')}"
     )
     await state.update_data(query=query)
     await update_menu(callback.bot, state)

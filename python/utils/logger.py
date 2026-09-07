@@ -1,10 +1,12 @@
-from pathlib import Path
+from services.path_manager import PathManager
 from datetime import datetime
+
+path_manager = PathManager()
 
 
 class Logger:
-    project_root = Path(__file__).resolve().parents[2]
-    log_directory = project_root / "data" / "logs_python"
+    project_root = path_manager.python_dir
+    log_directory = path_manager.logs_python
     log_directory.mkdir(parents=True, exist_ok=True)
     file_name = datetime.now().strftime("%Y-%m-%d_%H-%M-%S.log")
     path = log_directory / file_name

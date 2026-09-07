@@ -10,7 +10,7 @@ from aiogram.types import (
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
 
-from services.filters_manager import FiltersManager
+from services.managers import FiltersManager
 from utils.logger import Logger
 from states.settings import AddQuery
 from keyboards.add_query import areas_keyboard
@@ -35,6 +35,7 @@ async def edit_region(callback: CallbackQuery, state: FSMContext):
         )
         await callback.message.edit_text("❌ Не удалось открыть выбор области.")
         return
+
     regions = filters_manager.get_regions()
 
     if not regions:
@@ -46,18 +47,19 @@ async def edit_region(callback: CallbackQuery, state: FSMContext):
         return
 
     builder = InlineKeyboardBuilder()
+
     for region in regions:
         builder.button(
             text=region["name"], callback_data=f"select_region:{region['slug']}"
         )
+
     builder.button(text="🗑 Очистить регион", callback_data="clear_region")
     builder.button(text="◀️ Назад", callback_data="back")
     builder.adjust(1)
 
     await state.update_data(current_menu="region")
     await callback.message.edit_text(
-        "🌍 Выберите область:",
-        reply_markup=builder.as_markup(),
+        "🌍 Выберите область:", reply_markup=builder.as_markup()
     )
 
 
@@ -68,6 +70,7 @@ async def select_region(callback: CallbackQuery, state: FSMContext):
     try:
         slug = callback.data.split(":", 1)[1]  # type: ignore
         region = filters_manager.get_region(slug)
+
         if region is None:
             Logger.error(
                 callback.from_user.id, f"(select_region): регион '{slug}' не найден"
@@ -75,11 +78,8 @@ async def select_region(callback: CallbackQuery, state: FSMContext):
             return
 
         areas = region.get("areas", [])
-        await state.update_data(
-            selected_region=slug,
-            selected_areas=[],
-            areas_page=0,
-        )
+
+        await state.update_data(selected_region=slug, selected_areas=[], areas_page=0)
 
         if not areas:
             await apply_region_selection(callback, state)
@@ -169,8 +169,7 @@ async def toggle_area(callback: CallbackQuery, state: FSMContext):
         if area is None:
             Logger.error(
                 callback.from_user.id,
-                f"(toggle_area): район '{slug}' не найден "
-                f"в регионе '{selected_region}'",
+                f"(toggle_area): район '{slug}' не найден в регионе '{selected_region}'",
             )
             return
 
@@ -194,6 +193,7 @@ async def areas_page(callback: CallbackQuery, state: FSMContext):
 
     try:
         page = callback.data.split(":", 1)[1]  # type: ignore
+
         if page == "current":
             return
 
@@ -252,11 +252,13 @@ async def clear_region(callback: CallbackQuery, state: FSMContext):
     try:
         data = await state.get_data()
         query = data.get("query")
+
         if query is None:
             Logger.error(
                 callback.from_user.id, "(clear_region): query отсутствует в состоянии"
             )
             return
+
         query.pop("region", None)
         query.pop("areas", None)
 
@@ -299,16 +301,12 @@ async def back_to_regions(callback: CallbackQuery, state: FSMContext):
             builder.button(
                 text=region["name"], callback_data=f"select_region:{region['slug']}"
             )
+
         builder.button(text="🗑 Очистить регион", callback_data="clear_region")
         builder.button(text="◀️ Назад", callback_data="back")
         builder.adjust(1)
 
-        await state.update_data(
-            selected_region=None,
-            selected_areas=[],
-            areas_page=0,
-        )
-
+        await state.update_data(selected_region=None, selected_areas=[], areas_page=0)
         await callback.message.edit_text(  # type: ignore
             "🌍 Выберите область:", reply_markup=builder.as_markup()
         )

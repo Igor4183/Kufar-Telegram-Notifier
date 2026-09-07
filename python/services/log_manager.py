@@ -1,8 +1,11 @@
 from datetime import datetime
 from enum import Enum
 from pathlib import Path
+from services.path_manager import PathManager
 import re
 import zipfile
+
+path_manager = PathManager()
 
 
 class LogType(Enum):
@@ -14,10 +17,9 @@ class LogManager:
     LOG_PATTERN = re.compile(r"^(\d{4}-\d{2}-\d{2}_\d{2}-\d{2}-\d{2})\.log$")
 
     def __init__(self):
-        self.project_root = Path(__file__).resolve().parents[2]
         self.logs = {
-            LogType.PYTHON: self.project_root / "data" / "logs_python",
-            LogType.CPP: self.project_root / "data" / "logs_cpp",
+            LogType.PYTHON: path_manager.logs_python,
+            LogType.CPP: path_manager.logs_cpp,
         }
 
     def get_logs(self, log_type: LogType) -> list[Path]:
@@ -45,7 +47,7 @@ class LogManager:
         return [path for path in self.get_logs(log_type) if path.name.startswith(today)]
 
     def create_archive(self, log_type: LogType, logs: list[Path]) -> Path:
-        archive_directory = self.project_root / "data" / "admin_logs"
+        archive_directory = path_manager.admin_logs
         archive_directory.mkdir(parents=True, exist_ok=True)
         date = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
         archive_path = archive_directory / f"{log_type.value}_logs_{date}.zip"

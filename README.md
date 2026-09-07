@@ -215,10 +215,10 @@
 <h3>Python часть</h3>
 
 <p>Перейдите в директорию <code>python/</code> и создайте виртуальное окружение:</p>
-<pre><code>cd python python3 -m venv venv</code></pre>
+<pre><code>cd python python3 -m venv .venv</code></pre>
 
 <p>Активируйте виртуальное окружение:</p>
-<pre><code>source venv/bin/activate</code></pre>
+<pre><code>source .venv/bin/activate</code></pre>
 
 <p>Установите зависимости из <code>requirements.txt</code>:</p>
 <pre><code>pip install -r requirements.txt</code></pre>
@@ -235,7 +235,7 @@
 <h3>Python часть</h3>
 <p>Сначала перейдите в директорию <code>python/</code> и активируйте виртуальное окружение:</p>
 <pre>
-   <code>cd [путь-к-проекту]/python source venv/bin/activate</code>
+   <code>cd [путь-к-проекту]/python source .venv/bin/activate</code>
 </pre>
 <p>После этого запустите Telegram-бота:</p>
 <pre>

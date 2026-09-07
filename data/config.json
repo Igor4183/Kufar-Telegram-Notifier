@@ -1,0 +1,11 @@
+{
+    "bot-token": "111111:AAAAAAAAAAAAAAAAAAAA",
+    "support-chat-id": "-1111111111111",
+    "kufar-api": "https://api.kufar.by/search-api/v2/search/rendered-paginated",
+    "admin-chat-id": 928442831,
+    "constants": {
+        "default-max-queries": 5,
+        "kufar-default-max-price": 1000000000,
+        "kufar-timeout": 10
+    }
+}
