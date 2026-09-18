@@ -10,6 +10,7 @@ from aiogram.types import (
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
 
+from services.models import Query
 from services.filters_manager import FiltersManager
 from utils.logger import Logger
 from states.settings import AddQuery
@@ -27,7 +28,7 @@ async def edit_region(callback: CallbackQuery, state: FSMContext):
         return
 
     data = await state.get_data()
-    query = data.get("query")
+    query: Query | None = data.get("query")
     if query is None:
         Logger.error(
             callback.from_user.id,
@@ -206,7 +207,7 @@ async def areas_page(callback: CallbackQuery, state: FSMContext):
 
 async def apply_region_selection(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    query = data.get("query")
+    query: Query | None = data.get("query")
 
     if query is None:
         Logger.error(
@@ -234,12 +235,12 @@ async def apply_region_selection(callback: CallbackQuery, state: FSMContext):
         )
         return
 
-    query["region"] = region["id"]
+    query.region = region["id"]
 
     if selected_areas:
-        query["areas"] = selected_areas.copy()
+        query.areas = selected_areas.copy()
     else:
-        query.pop("areas", None)
+        query.areas = None
 
     await state.update_data(query=query, current_menu="main")
     await update_menu(callback.bot, state)
@@ -251,14 +252,14 @@ async def clear_region(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data.get("query")
+        query: Query | None = data.get("query")
         if query is None:
             Logger.error(
                 callback.from_user.id, "(clear_region): query отсутствует в состоянии"
             )
             return
-        query.pop("region", None)
-        query.pop("areas", None)
+        query.region = None
+        query.areas = None
 
         await state.update_data(
             query=query,

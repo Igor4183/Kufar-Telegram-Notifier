@@ -2,6 +2,9 @@ from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 
+from services.models import Query, Ad
+from services.query_manager import QueryManager
+from services.database import Database
 from services.config_manager import ConfigManager
 from utils.logger import Logger
 from keyboards.settings import back_to_settings_keyboard
@@ -9,7 +12,9 @@ from states.settings import AddQuery
 from views.settings import update_menu
 
 router = Router()
+database = Database()
 config_manager = ConfigManager()
+query_manager = QueryManager(database, config_manager)
 
 
 @router.callback_query(F.data == "edit_query")
@@ -23,7 +28,7 @@ async def edit_query(callback: CallbackQuery, state: FSMContext):
     Logger.info(chat_id, "/settings -> edit_query")
 
     try:
-        queries = config_manager.get_queries(str(chat_id))
+        queries = query_manager.get_queries(chat_id)
 
         if not queries:
             await callback.message.edit_text("У вас нет настроенных поисков.")
@@ -31,9 +36,13 @@ async def edit_query(callback: CallbackQuery, state: FSMContext):
 
         text = "✏️ Выберите запрос для изменения:\n\n"
 
-        for number, query in enumerate(queries, 1):
-            tag = query.get("tag", "[UNDEFINED]")
-            text += f"{number}. {tag}\n"
+        for i in range(len(queries)):
+            query = queries[i]
+            tag = query.tag
+            if tag is None:
+                text += f"{i+1}. [UNDEFINDED]\n"
+            else:
+                text += f"{i+1}. {tag}\n"
 
         text += "\nВведите номер запроса:"
 
@@ -61,13 +70,13 @@ async def process_edit(message: Message, state: FSMContext):
     number = int(message.text)
 
     try:
-        queries = config_manager.get_queries(str(message.chat.id))
+        queries = query_manager.get_queries(message.chat.id)
 
         if number <= 0 or number > len(queries):
             await message.answer("❌ Нет такого номера.")
             return
 
-        query = queries[number - 1].copy()
+        query: Query = queries[number - 1]
 
         Logger.info(
             message.chat.id,
@@ -94,8 +103,7 @@ async def delete_query(callback: CallbackQuery, state: FSMContext):
     Logger.info(chat_id, "/settings -> remove_query")
 
     try:
-        queries = config_manager.get_queries(str(chat_id))
-
+        queries = query_manager.get_queries(chat_id)
         if len(queries) == 0:
             await callback.message.answer("У вас нет настроенных поисков.")
             return
@@ -103,10 +111,10 @@ async def delete_query(callback: CallbackQuery, state: FSMContext):
         text = "Введите номер объявления для удаления:\n\n"
 
         for number, query in enumerate(queries, 1):
-            if "tag" in query:
-                text += f"{number}. {query['tag']}\n"
+            if query.tag is None:
+                text += f"{number}. [UNDEFINDED]"
             else:
-                text += f"{number}. [UNDEFINED]\n"
+                text += f"{number}. {query.tag}\n"
 
         await callback.message.answer(text, reply_markup=back_to_settings_keyboard())
         await state.set_state(AddQuery.waiting_for_delete)
@@ -124,15 +132,15 @@ async def process_delete(message: Message, state: FSMContext):
     index = int(message.text)
 
     try:
-        config = config_manager.get_queries(str(message.chat.id))
+        config = query_manager.get_queries(message.chat.id)
         if index <= 0 or index > len(config):
             await message.answer("Нет такого номера.")
             return
-        query = config_manager.get_query(index, str(message.chat.id))
+        query = query_manager.get_query(index, message.chat.id)
         Logger.info(
             message.chat.id, f"Запрос под номером {index} удалён. " + str(query)
         )
-        config_manager.remove_query(str(message.chat.id), index)
+        query_manager.remove_query(message.chat.id, index)
 
         await state.clear()
         await message.answer("✅ Запрос удалён.")

@@ -126,3 +126,6 @@ bot.db
 logs_cpp/
 logs_python/
 admin_logs/
+kufar_jsons/
+
+docs/

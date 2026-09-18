@@ -1,0 +1,14 @@
+{
+    "bot-token": "env",
+    "support-chat-id": "env",
+    "admin-chat-id": "env",
+    "kufar-api": "https://searchapi.kufar.by/v1/search/rendered-paginated?",
+    "limit-coefficient": 1.0,
+    "constants": {
+        "default-delay": 600,
+        "default-max-queries": 5,
+        "default-limit": 5,
+        "kufar-default-max-price": 1000000000,
+        "kufar-timeout": 5
+    }
+}

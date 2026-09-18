@@ -31,8 +31,30 @@ class Database:
                 """)
             self.connection.execute("""
                 CREATE TABLE IF NOT EXISTS user_limits (
-                    chat_id INTEGER PRIMARY KEY,
+                    chat_id INTEGER PRIMARY KEY REFERENCES users(chat_id) ON DELETE CASCADE,
                     max_queries INTEGER NOT NULL
+                )
+                """)
+            self.connection.execute("""
+                CREATE TABLE IF NOT EXISTS cached_ads (
+                    ad_id INTEGER PRIMARY KEY,
+                    kufar_api_json_id INTEGER,
+                    query_id INTEGER,
+                    subject TEXT NOT NULL,
+                    list_time INTEGER NOT NULL,
+                    price_byn INTEGER,
+                    ad_link TEXT NOT NULL,
+                    category INTEGER,
+                    company INTEGER,
+                    phone_hidden INTEGER,
+                    first_seen INTEGER NOT NULL
+                )
+                """)  # subject - ad name, list_time - publication time
+            self.connection.execute("""
+                CREATE TABLE IF NOT EXISTS cached_data (
+                    chat_id INTEGER NOT NULL REFERENCES users(chat_id) ON DELETE CASCADE,
+                    ad_id INTEGER NOT NULL REFERENCES cached_ads(ad_id) ON DELETE CASCADE,
+                    PRIMARY KEY (chat_id, ad_id)
                 )
                 """)
             self.connection.commit()

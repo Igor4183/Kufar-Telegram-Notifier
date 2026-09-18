@@ -1,8 +1,10 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
+from services.models import Query
 
-def main_keyboard(query: dict) -> InlineKeyboardMarkup:
+
+def main_keyboard(query: Query) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     builder.button(text="Изменить заголовок", callback_data="edit_tag")
@@ -16,39 +18,37 @@ def main_keyboard(query: dict) -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def other_keyboard(query: dict) -> InlineKeyboardMarkup:
+def other_keyboard(query: Query) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
-    enabled = query.get("only-title-search", False)
+    enabled = query.only_title_search
     text = "✅ Поиск только в заголовках" if enabled else "❌ Поиск только в заголовках"
     builder.button(text=text, callback_data="toggle_only_title")
 
-    enabled = query.get("only-with-photos", False)
+    enabled = query.only_with_photos
     text = "✅ только с фото" if enabled else "❌ только с фото"
     builder.button(text=text, callback_data="toggle_only_with_photos")
 
-    enabled = query.get("only-with-videos", False)
+    enabled = query.only_with_videos
     text = "✅ только с видео" if enabled else "❌ только с видео"
-    builder.button(text=text, callback_data="toggle_only_with_videos")
+    builder.button(text=text, callback_data="toggle_only_videos")
 
-    enabled = query.get("condition", 0)  # 0 - disable, 1 - used, 2 - new
-    if enabled == 0:
-        text = "Cостояние: не указано"
+    enabled = query.condition
+    if enabled == 0 or enabled is None:
+        text = "Состояние: не указано"
     elif enabled == 1:
         text = "Состояние: б/у"
     else:
         text = "Состояние: новое"
     builder.button(text=text, callback_data="toggle_condition")
 
-    enabled = query.get(
-        "seller-type", 2
-    )  # 0 - individualPerson, 1 - company, 2 - disable
+    enabled = query.seller_type
     if enabled == 0:
-        text = "Тип продовца: частное лицо"
+        text = "Тип продавца: частное лицо"
     elif enabled == 1:
-        text = "Тип продовца: компания"
+        text = "Тип продавца: компания"
     else:
-        text = "Тип продовца: не указано"
+        text = "Тип продавца: не указано"
     builder.button(text=text, callback_data="toggle_seller_type")
 
     builder.button(text="🔙 Назад", callback_data="back")
@@ -72,20 +72,25 @@ def areas_keyboard(
 
     builder.adjust(2)
     builder.row(InlineKeyboardButton(text="🌍 Вся область", callback_data="areas_all"))
+
     navigation = []
+
     if page > 0:
         navigation.append(
             InlineKeyboardButton(text="⬅️", callback_data=f"areas_page:{page - 1}")
         )
+
     navigation.append(
         InlineKeyboardButton(
             text=f"{page + 1}/{total_pages}", callback_data="areas_page:current"
         )
     )
+
     if page < total_pages - 1:
         navigation.append(
             InlineKeyboardButton(text="➡️", callback_data=f"areas_page:{page + 1}")
         )
+
     builder.row(*navigation)
     builder.row(InlineKeyboardButton(text="💾 Сохранить", callback_data="save_region"))
     builder.row(InlineKeyboardButton(text="◀️ Назад", callback_data="back_to_regions"))

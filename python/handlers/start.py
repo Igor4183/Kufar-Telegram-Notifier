@@ -13,13 +13,13 @@ user_manager = UserManager(database)
 
 @router.message(Command("start"))
 async def start_command(message: Message):
-    Logger(message.chat.id, "/start")  # type: ignore
+    Logger.info(message.chat.id, "/start")  # type: ignore
     user_manager.get_or_create_user(
         message.chat.id, message.from_user.username  # type: ignore
     )
     await message.answer(
         """
-<b>Kufar Telegram Notifier<\b>
+<b>Kufar Telegram Notifier</b>
 
 Бот для автоматического поиска новых объявлений на Kufar и отправки уведомлений в Telegram.
 
@@ -37,7 +37,10 @@ async def start_command(message: Message):
 
 @router.message(Command("help"))
 async def help_command(message: Message):
-    Logger(message.chat.id, "/help")  # type: ignore
+    Logger.info(message.chat.id, "/help")  # type: ignore
+    user_manager.get_or_create_user(
+        message.chat.id, message.from_user.username  # type: ignore
+    )
     await message.answer("""
 Доступные команды:
 

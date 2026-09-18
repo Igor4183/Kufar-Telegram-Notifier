@@ -44,7 +44,7 @@ async def process_feedback(message: Message, state: FSMContext):
         )
         return
 
-    support_chat_id = config_manager.get_support_chat_id()
+    support_chat_id = config_manager.support_chat_id
     username = message.from_user.username  # type: ignore
     first_name = message.from_user.first_name  # type: ignore
 
@@ -72,7 +72,7 @@ async def process_feedback(message: Message, state: FSMContext):
 @router.message(F.reply_to_message)
 async def reply_to_feedback(message: Message):
 
-    support_chat_id = config_manager.get_support_chat_id()
+    support_chat_id = config_manager.support_chat_id
 
     if message.chat.id != support_chat_id:
         return

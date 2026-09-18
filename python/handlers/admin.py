@@ -43,7 +43,7 @@ async def change_admin_menu(
 
 @router.message(Command("admin"))
 async def admin_command(message: Message, state: FSMContext):
-    if message.chat.id != config_manager.get_admin_chat_id():
+    if message.chat.id != config_manager.admin_chat_id:
         Logger.warning(message.chat.id, "Попытка доступа к админ-панели")
         return
     Logger.info(message.chat.id, "/admin")

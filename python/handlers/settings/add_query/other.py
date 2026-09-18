@@ -2,6 +2,7 @@ from aiogram import Router, F
 from aiogram.types import CallbackQuery
 from aiogram.fsm.context import FSMContext
 
+from services.models import Query
 from utils.logger import Logger
 from states.settings import AddQuery
 from views.settings import update_menu
@@ -41,12 +42,14 @@ async def toggle_only_title(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
-        query["only-title-search"] = not query.get("only-title-search", False)
+        query: Query = data["query"]
+        query.only_title_search = not query.only_title_search
+
         Logger.info(
             callback.from_user.id,
-            f"/settings -> only-title-search -> {query['only-title-search']}",
+            f"/settings -> only-title-search -> {query.only_title_search}",
         )
+
         await state.update_data(query=query)
         await update_menu(callback.bot, state)
     except Exception as error:
@@ -59,12 +62,14 @@ async def toggle_only_with_photos(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
-        query["only-with-photos"] = not query.get("only-with-photos", False)
+        query: Query = data["query"]
+        query.only_with_photos = not query.only_with_photos
+
         Logger.info(
             callback.from_user.id,
-            f"/settings -> only-with-photos -> {query['only-with-photos']}",
+            f"/settings -> only-with-photos -> {query.only_with_photos}",
         )
+
         await state.update_data(query=query)
         await update_menu(callback.bot, state)
     except Exception as error:
@@ -77,11 +82,12 @@ async def toggle_only_with_videos(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
-        query["only-with-videos"] = not query.get("only-with-videos", False)
+        query: Query = data["query"]
+        query.only_with_videos = not query.only_with_videos
+
         Logger.info(
             callback.from_user.id,
-            f"/settings -> only-with-videos -> {query['only-with-videos']}",
+            f"/settings -> only-with-videos -> {query.only_with_videos}",
         )
 
         await state.update_data(query=query)
@@ -96,13 +102,17 @@ async def toggle_condition(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
-        query["condition"] = (query.get("condition", 0) + 1) % 3
-        if query["condition"] == 0:
-            query.pop("condition")
-        Logger.info(
-            callback.from_user.id, f"(toggle_condition): {query.get('condition')}"
-        )
+        query: Query = data["query"]
+
+        if query.condition is None:
+            query.condition = 1
+        else:
+            query.condition = (query.condition + 1) % 3
+            if query.condition == 0:
+                query.condition = None
+
+        Logger.info(callback.from_user.id, f"(toggle_condition): {query.condition}")
+
         await state.update_data(query=query)
         await update_menu(callback.bot, state)
     except Exception as error:
@@ -115,14 +125,18 @@ async def toggle_seller_type(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
-        query["seller-type"] = (query.get("seller-type", 2) + 1) % 3
-        if query["seller-type"] == 2:
-            query.pop("seller-type")
+        query: Query = data["query"]
+
+        if query.seller_type is None:
+            query.seller_type = 0
+        else:
+            query.seller_type = (query.seller_type + 1) % 3
+            if query.seller_type == 2:
+                query.seller_type = None
 
         Logger.info(
             callback.from_user.id,
-            f"/settings -> seller-type -> {query.get('seller-type')}",
+            f"/settings -> seller-type -> {query.seller_type}",
         )
 
         await state.update_data(query=query)

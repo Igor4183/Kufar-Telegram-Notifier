@@ -11,6 +11,7 @@ from utils.logger import Logger
 from keyboards.settings import back_to_settings_keyboard
 from states.settings import AddQuery
 from views.settings import update_menu
+from services.models import Query
 
 router = Router()
 database = Database()
@@ -54,7 +55,14 @@ async def process_query(message: Message, state: FSMContext):
     Logger.info(message.chat.id, f"(waiting_for_tag) введён tag: {message.text}")
 
     try:
-        query = {"tag": message.text}
+        query = Query(
+            chat_id=message.chat.id,
+            tag=message.text,
+            delay=config_manager.default_delay,
+            limit=config_manager.default_limit,
+            start_time=int(time.time()),
+        )
+
         menu = await message.answer("Создаю меню...")
         await state.update_data(
             query=query,
@@ -64,6 +72,7 @@ async def process_query(message: Message, state: FSMContext):
         )
         await state.set_state(AddQuery.editing)
         await update_menu(message.bot, state)
+
     except Exception as error:
         Logger.error(message.chat.id, f"(process_query): {error}")
         await state.clear()
@@ -79,9 +88,11 @@ async def waiting_for_value(message: Message, state: FSMContext):
     try:
         data = await state.get_data()
         field = data["editing_field"]
-        query = data["query"]
+        query: Query = data["query"]
+
         if field == "tag":
-            query["tag"] = message.text
+            query.tag = message.text
+
         await state.update_data(query=query)
         await state.set_state(AddQuery.editing)
         await update_menu(message.bot, state)
@@ -94,7 +105,9 @@ async def waiting_for_value(message: Message, state: FSMContext):
 async def edit_tag(callback: CallbackQuery, state: FSMContext):
     if not isinstance(callback.message, Message):
         return
+
     await callback.answer()
+
     try:
         await state.update_data(editing_field="tag")
         await state.set_state(AddQuery.waiting_for_value)
@@ -107,8 +120,10 @@ async def edit_tag(callback: CallbackQuery, state: FSMContext):
 async def cancel_query(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/settings -> создание запроса отменено")
     await callback.answer()
+
     try:
         await state.clear()
+
         if isinstance(callback.message, Message):
             await callback.message.edit_text("❌ Создание запроса отменено.")
 
@@ -122,32 +137,32 @@ async def save_query(callback: CallbackQuery, state: FSMContext):
 
     try:
         data = await state.get_data()
-        query = data["query"]
+        query: Query = data["query"]
         chat_id = callback.from_user.id
         edit_mode = data.get("edit_mode", False)
 
         if edit_mode:
             query_number = data["query_number"]
-            config_manager.update_query(str(chat_id), query_number, query)
-            Logger.info(chat_id, f"Изменён запрос №{query_number}: '{query['tag']}'")
-
+            query_manager.update_query(chat_id, query_number, query)
+            Logger.info(chat_id, f"Изменён запрос №{query_number}: '{query.tag}'")
         else:
-            query["start-time"] = int(time.time())
-            query["limit"] = (
-                5  # что-то тут надо придумать с лимитом, чтобы у меня комп не лёг и можно было бы его настраивать.
-            )
-            query["chat-id"] = str(callback.from_user.id)
-            config_manager.add_query(str(chat_id), query)
-            Logger.info(
-                callback.from_user.id, f"Добавлен новый запрос '{query['tag']}'"
-            )
+            query.query_id = query_manager.get_next_query_id()
+            query.enabled = True
+            query.start_time = int(time.time())
+            query.chat_id = chat_id
+
+            query_manager.add_query(query)
+
+            Logger.info(chat_id, f"Добавлен новый запрос '{query.tag}'")
 
         await state.clear()
+
         if isinstance(callback.message, Message):
             await callback.message.edit_text("✅ Запрос успешно сохранён.")
 
     except Exception as error:
         Logger.error(callback.from_user.id, f"(save_query): {error}")
+
         if isinstance(callback.message, Message):
             await callback.message.edit_text(
                 "❌ Не удалось сохранить запрос. Попробуйте ещё раз."
