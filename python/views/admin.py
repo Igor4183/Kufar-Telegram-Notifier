@@ -52,15 +52,15 @@ async def update_admin_menu(
         return
 
     if current_state == Admin.queries.state:
-        queries = config_manager.get_queries(None)
+        queries = query_manager.get_queries(None)
         text = f"🔎 Количество запросов: {len(queries)}\n\n"
 
         if not queries:
             text += "Запросов пока нет. :("
         else:
             for number, query in enumerate(queries, 1):
-                tag = query.get("tag", "[UNDEFINED]")
-                chat_id = query.get("chat-id", "[UNDEFINED]")
+                tag = query.tag if query.tag is not None else "[UNDEFINED]"
+                chat_id = query.chat_id if query.chat_id is not None else "[UNDEFINED]"
                 text += f"{number}. {tag} " f"<code>{chat_id}</code>\n"
 
         await message.edit_text(
