@@ -221,3 +221,18 @@ class QueryManager:
             return 1
         max_query_id = max(query.query_id for query in queries)
         return max_query_id + 1
+
+    def set_query_enabled(self, chat_id: int, query_id: int, enabled: bool) -> bool:
+        queries = self._load_queries()
+        for query in queries:
+            if query.get("chat-id") != chat_id:
+                continue
+            if query.get("query-id") != query_id:
+                continue
+
+            query["enabled"] = enabled
+            self._save_queries(queries)
+            return True
+
+        Logger.error(chat_id, f"query_manager: Query not found: query_id={query_id}")
+        return False

@@ -11,7 +11,7 @@
             23,
             30
         ],
-        "enabled": true
+        "enabled": false
     },
     {
         "query-id": 1,
@@ -43,11 +43,13 @@
         ],
         "start-time": 1783965480,
         "chat-id": 928442831,
-        "delay": 300
+        "delay": 300,
+        "enabled": false
     },
     {
         "query-id": 2,
         "chat-id": 928442831,
-        "url": "cat=1010&cur=USD&ffw=v.or%3A1&gtsy=country-belarus&lang=ru&size=30&typ=let"
+        "url": "cat=1010&cur=USD&ffw=v.or%3A1&gtsy=country-belarus&lang=ru&size=30&typ=let",
+        "enabled": false
     }
 ]

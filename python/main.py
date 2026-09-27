@@ -3,19 +3,13 @@ import aiohttp
 
 from aiogram import Bot, Dispatcher
 from handlers import start, settings, feedback, admin
-from services.database import Database
 from services.config_manager import ConfigManager
-from services.user_manager import UserManager
-from services.query_manager import QueryManager
 from utils.logger import Logger
 from services.scheduler import Scheduler
 
 
 async def main():
     config_manager = ConfigManager()
-    database = Database()
-    user_manager = UserManager(database)
-    query_manager = QueryManager(database, config_manager)
 
     bot = Bot(config_manager.bot_token)
     dp = Dispatcher()
@@ -33,6 +27,11 @@ async def main():
         finally:
             scheduler.stop()
             scheduler_task.cancel()
+
+            try:
+                await scheduler_task
+            except asyncio.CancelledError:
+                pass
 
 
 if __name__ == "__main__":

@@ -1,10 +1,11 @@
 import asyncio
 
 from aiogram import Bot
-from aiogram.types import InputMediaPhoto
+from aiogram.types import InputMediaPhoto, MediaUnion
 from services.models import Ad, Query
 from services.notification import NotificationFormatter
 from services.cache_manager import CacheManager
+from utils.logger import Logger
 
 
 class NotificationService:
@@ -18,17 +19,26 @@ class NotificationService:
             return
 
         for ad in ads:
-            if self.cache_manager.is_ad_cached(ad.id):
+            if (
+                self.cache_manager.is_ad_cached(query.chat_id, ad.ad_id)
+                or not query.enabled
+            ):  # bad practice
                 continue
             text = self.notification_formatter.format_ad(ad, query)
             if not ad.images:
                 await self.bot.send_message(
                     chat_id=query.chat_id, text=text, parse_mode="HTML"
                 )
-                return
-            media = [
-                InputMediaPhoto(media=ad.images[0].url, caption=text, parse_mode="HTML")
-            ]
-            for image in ad.images[1:]:
-                media.append(InputMediaPhoto(media=image.url))
-            await self.bot.send_media_group(chat_id=chat_id, media=media)  # type: ignore
+            else:
+                media: list[MediaUnion] = [
+                    InputMediaPhoto(
+                        media=ad.images[0].url, caption=text, parse_mode="HTML"
+                    )
+                ]
+                for image in ad.images[1:10]:  # first 10 pictures
+                    media.append(InputMediaPhoto(media=image.url))
+                await self.bot.send_media_group(chat_id=query.chat_id, media=media)
+
+            Logger.info(query.chat_id, f"{query.tag}: [{ad.title}], [{ad.link}]")
+            self.cache_manager.save_ad(ad, query.query_id)
+            self.cache_manager.save_cached_data(query.chat_id, ad.ad_id)

@@ -42,6 +42,9 @@ class ConfigManager:
                 "kufar-default-max-price"
             ]
             self.kufar_timeout = config["constants"]["kufar-timeout"]
+            self.kufar_min_execution_time = config["constants"][
+                "kufar-min-execution-time"
+            ]
         except Exception as exc:
             Logger.error(
                 None,

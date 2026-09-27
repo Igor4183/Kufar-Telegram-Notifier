@@ -9,23 +9,22 @@ class CacheManager:
     def __init__(self):
         self.database = Database()
 
-    def is_ad_cached(self, ad_id: int) -> bool:
+    def is_ad_cached(self, chat_id: int, ad_id: int) -> bool:
         cursor = self.database.execute(
             """
             SELECT 1
-            FROM cached_ads
-            WHERE ad_id = ?
+            FROM cached_data
+            WHERE chat_id = ? AND ad_id = ?
             LIMIT 1
             """,
-            (ad_id,),
+            (chat_id, ad_id),
         )
-
         return cursor.fetchone() is not None
 
     def save_ad(self, ad: Ad, query_id: int) -> None:
         self.database.execute(
             """
-            INSERT INTO cached_ads (
+            INSERT OR IGNORE INTO cached_ads (
                 ad_id,
                 kufar_api_json_id,
                 query_id,
@@ -49,12 +48,11 @@ class CacheManager:
                 int(ad.price_byn) if ad.price_byn else None,
                 ad.ad_link,
                 int(ad.category) if ad.category else None,
-                int(ad.company_ad),
-                int(ad.phone_hidden),
+                int(ad.company_ad) if ad.company_ad is not None else None,
+                int(ad.phone_hidden) if ad.phone_hidden is not None else None,
                 int(time()),
             ),
         )
-
         self.database.commit()
 
     def save_cached_data(self, chat_id: int, ad_id: int) -> None:

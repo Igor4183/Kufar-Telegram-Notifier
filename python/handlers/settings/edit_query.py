@@ -112,7 +112,7 @@ async def delete_query(callback: CallbackQuery, state: FSMContext):
 
         for number, query in enumerate(queries, 1):
             if query.tag is None:
-                text += f"{number}. [UNDEFINDED]"
+                text += f"{number}. [UNDEFINDED]\n"
             else:
                 text += f"{number}. {query.tag}\n"
 

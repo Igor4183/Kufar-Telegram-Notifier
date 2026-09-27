@@ -10,6 +10,7 @@ from aiogram.types import (
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.fsm.context import FSMContext
 
+from services.models import Query
 from services.filters_manager import FiltersManager
 from utils.logger import Logger
 from states.settings import AddQuery
@@ -139,9 +140,7 @@ async def select_category(callback: CallbackQuery, state: FSMContext):
             selected_sub_category=None,
             sub_categories_page=0,
         )
-        if not sub_categories:
-            await update_sub_categories_menu(callback, state)
-            return
+
         await update_sub_categories_menu(callback, state)
     except Exception as error:
         Logger.error(callback.from_user.id, f"(select_category): ошибка: {error}")
@@ -303,7 +302,6 @@ async def select_sub_category(callback: CallbackQuery, state: FSMContext):
                 callback.from_user.id, "(select_sub_category): категория не найдена"
             )
             return
-
         sub_category = next(
             (
                 sub_category
@@ -318,9 +316,8 @@ async def select_sub_category(callback: CallbackQuery, state: FSMContext):
                 f"(select_sub_category): подкатегория '{slug}' не найдена",
             )
             return
-
         await state.update_data(selected_sub_category=sub_category["id"])
-        await save_category(callback, state)
+        await apply_category_selection(callback, state)
     except Exception as error:
         Logger.error(callback.from_user.id, f"(select_sub_category): ошибка: {error}")
 
@@ -336,12 +333,12 @@ async def all_sub_categories(callback: CallbackQuery, state: FSMContext):
         if selected_category is None:
             Logger.error(
                 callback.from_user.id,
-                "(all_sub_categories): selected_category " "отсутствует в состоянии",
+                "(all_sub_categories): selected_category отсутствует в состоянии",
             )
             return
 
         await state.update_data(selected_sub_category=None)
-        await save_category(callback, state)
+        await apply_category_selection(callback, state)
     except Exception as error:
         Logger.error(callback.from_user.id, f"(all_sub_categories): ошибка: {error}")
 
@@ -352,6 +349,7 @@ async def back_to_categories(callback: CallbackQuery, state: FSMContext):
 
     try:
         await state.update_data(
+            selected_category=None,
             selected_category_slug=None,
             selected_sub_category=None,
             sub_categories_page=0,
@@ -374,8 +372,8 @@ async def clear_category(callback: CallbackQuery, state: FSMContext):
             )
             return
 
-        query.pop("category", None)
-        query.pop("sub-category", None)
+        query.category = None
+        query.sub_category = None
 
         await state.update_data(
             query=query,
@@ -396,31 +394,28 @@ async def clear_category(callback: CallbackQuery, state: FSMContext):
 
 async def apply_category_selection(callback: CallbackQuery, state: FSMContext):
     data = await state.get_data()
-    query = data.get("query")
+    query: Query | None = data.get("query")
+
     if query is None:
         Logger.error(
             callback.from_user.id,
-            "(apply_category_selection): query отсутствует " "в состоянии",
-        )
-        return
-    selected_category = data.get("selected_category")
-    selected_sub_category = data.get("selected_sub_category")
-    if selected_category is None:
-        Logger.error(
-            callback.from_user.id,
-            "(apply_category_selection): selected_category " "отсутствует в состоянии",
+            "(apply_category_selection): query отсутствует в состоянии",
         )
         return
 
-    query["category"] = selected_category
-    if selected_sub_category is not None:
-        query["sub-category"] = selected_sub_category
-    else:
-        query.pop("sub-category", None)
-    await state.update_data(
-        query=query,
-        current_menu="main",
-    )
+    selected_category = data.get("selected_category")
+    selected_sub_category = data.get("selected_sub_category")
+
+    if selected_category is None:
+        Logger.error(
+            callback.from_user.id,
+            "(apply_category_selection): selected_category отсутствует в состоянии",
+        )
+        return
+
+    query.category = selected_category
+    query.sub_category = selected_sub_category
+    await state.update_data(query=query, current_menu="main")
     await update_menu(callback.bot, state)
 
 

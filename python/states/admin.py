@@ -7,5 +7,4 @@ class Admin(StatesGroup):
     queries = State()
     limits = State()
     waiting_for_limits = State()
-    logs = State()
     log_format = State()

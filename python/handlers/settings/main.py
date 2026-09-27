@@ -18,12 +18,7 @@ async def settings_command(message: Message):
     await message.answer(text, reply_markup=settings_keyboard())
 
 
-@router.callback_query(
-    StateFilter(
-        AddQuery.waiting_for_edit, AddQuery.waiting_for_delete, AddQuery.waiting_for_tag
-    ),
-    F.data == "back_to_settings",
-)
+@router.callback_query(F.data == "back_to_settings")
 async def back_to_settings(callback: CallbackQuery, state: FSMContext):
     await callback.answer()
     if not isinstance(callback.message, Message):

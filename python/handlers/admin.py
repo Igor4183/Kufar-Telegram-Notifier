@@ -4,14 +4,17 @@ from aiogram.filters import Command, StateFilter
 from aiogram.types import Message, CallbackQuery, FSInputFile
 from aiogram.fsm.context import FSMContext
 
-from pathlib import Path
 from services.database import Database
 from services.config_manager import ConfigManager
 from services.user_manager import UserManager
 from services.query_manager import QueryManager
-from services.log_manager import LogManager, LogType
 from utils.logger import Logger
-from keyboards.admin import admin_keyboard
+from keyboards.admin import (
+    admin_keyboard,
+    admin_back_keyboard,
+    admin_limits_keyboard,
+    admin_log_format_keyboard,
+)
 from states.admin import Admin
 from views.admin import update_admin_menu
 
@@ -21,7 +24,8 @@ database = Database()
 config_manager = ConfigManager()
 user_manager = UserManager(database)
 query_manager = QueryManager(database, config_manager)
-log_manager = LogManager()
+
+log_manager = Logger.log_manager
 
 
 async def change_admin_menu(
@@ -31,6 +35,7 @@ async def change_admin_menu(
         return
 
     await state.set_state(admin_state)
+
     await update_admin_menu(
         callback.message,
         state,
@@ -46,10 +51,15 @@ async def admin_command(message: Message, state: FSMContext):
     if message.chat.id != config_manager.admin_chat_id:
         Logger.warning(message.chat.id, "Попытка доступа к админ-панели")
         return
+
     Logger.info(message.chat.id, "/admin")
 
     await state.set_state(Admin.main)
-    await message.answer("🛠 Панель администратора", reply_markup=admin_keyboard())
+
+    await message.answer(
+        "🛠 Панель администратора",
+        reply_markup=admin_keyboard(),
+    )
 
 
 @router.callback_query(Admin.main, F.data == "admin_users")
@@ -57,6 +67,7 @@ async def admin_users(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/admin -> admin_users")
 
     await callback.answer()
+
     await change_admin_menu(
         callback,
         state,
@@ -69,6 +80,7 @@ async def admin_queries(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/admin -> admin_queries")
 
     await callback.answer()
+
     await change_admin_menu(
         callback,
         state,
@@ -81,6 +93,7 @@ async def admin_limits(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/admin -> admin_limits")
 
     await callback.answer()
+
     await change_admin_menu(
         callback,
         state,
@@ -90,12 +103,18 @@ async def admin_limits(callback: CallbackQuery, state: FSMContext):
 
 @router.callback_query(Admin.limits, F.data == "admin_change_max_queries")
 async def admin_change_max_queries(callback: CallbackQuery, state: FSMContext):
-    Logger.info(callback.from_user.id, "/admin -> admin_change_max_queries")
+    Logger.info(
+        callback.from_user.id,
+        "/admin -> admin_change_max_queries",
+    )
 
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
+
     await state.set_state(Admin.waiting_for_limits)
+
     await callback.message.edit_text(
         "Введите лимиты в формате:\n\n"
         "<code>chat_id max_queries</code>\n\n"
@@ -115,6 +134,7 @@ async def process_query_limits(message: Message, state: FSMContext):
 
     lines = message.text.strip().splitlines()
     limits = []
+
     for line_number, line in enumerate(lines, 1):
         parts = line.split()
 
@@ -127,22 +147,23 @@ async def process_query_limits(message: Message, state: FSMContext):
             )
             return
 
-        chat_id, max_queries = parts
         try:
-            chat_id, max_queries = int(chat_id), int(max_queries)
+            chat_id, max_queries = map(int, parts)
         except ValueError:
             await message.answer(
-                f"❌ В строке {line_number} лимит и id чата должены быть числом."
+                f"❌ В строке {line_number} " "chat_id и лимит должны быть числами."
             )
             return
 
-        if max_queries < 0 or chat_id < 0:
+        if chat_id < 0 or max_queries < 0:
             await message.answer(
-                f"❌ В строке {line_number} лимит и id чата не может быть отрицательным."
+                f"❌ В строке {line_number} "
+                "chat_id и лимит не могут быть отрицательными."
             )
             return
 
         limits.append((chat_id, max_queries))
+
     for chat_id, max_queries in limits:
         try:
             query_manager.set_max_queries(chat_id, max_queries)
@@ -152,12 +173,15 @@ async def process_query_limits(message: Message, state: FSMContext):
                 f"Ошибка при изменении лимита: "
                 f"chat_id={chat_id}, max_queries={max_queries}: {exc}",
             )
+            continue
+
         Logger.info(
             message.chat.id,
             f"/admin -> изменён лимит запросов: " f"{chat_id} = {max_queries}",
         )
 
     await state.set_state(Admin.main)
+
     await message.answer(
         f"✅ Лимиты успешно обновлены: {len(limits)}",
         reply_markup=admin_keyboard(),
@@ -166,268 +190,235 @@ async def process_query_limits(message: Message, state: FSMContext):
 
 @router.callback_query(Admin.main, F.data == "admin_configuration")
 async def admin_configuration(callback: CallbackQuery):
-    Logger.info(callback.from_user.id, "/admin -> admin_configuration")
+    Logger.info(
+        callback.from_user.id,
+        "/admin -> admin_configuration",
+    )
+
     await callback.answer()
 
-    config_path = (
-        Path(__file__).resolve().parent.parent.parent
-        / "data"
-        / "kufar-configuration.json"
-    )
+    config_path = config_manager.path
 
     try:
         if not config_path.exists():
             Logger.error(
-                callback.from_user.id, f"Не найден файл конфигурации: {config_path}"
+                callback.from_user.id,
+                f"Не найден файл конфигурации: {config_path}",
             )
-            await callback.message.answer("❌ Файл конфигурации не найден.")  # type: ignore
+            await callback.message.answer(  # type: ignore
+                "❌ Файл конфигурации не найден."
+            )
             return
-        document = FSInputFile(config_path)
+
         await callback.message.answer_document(  # type: ignore
-            document=document,
+            FSInputFile(config_path),
             caption="📋 Текущая конфигурация",
         )
-        Logger.info(callback.from_user.id, "Конфигурация отправлена администратору")
+
+        Logger.info(
+            callback.from_user.id,
+            "Конфигурация отправлена администратору",
+        )
+
     except Exception as exc:
         Logger.error(
             callback.from_user.id,
             f"Ошибка при отправке конфигурации: " f"[{type(exc).__name__}] {exc}",
         )
-        await callback.message.answer("❌ Не удалось отправить конфигурацию.")  # type: ignore
+
+        await callback.message.answer(  # type: ignore
+            "❌ Не удалось отправить конфигурацию."
+        )
 
 
 @router.callback_query(Admin.main, F.data == "admin_logs")
 async def admin_logs(callback: CallbackQuery, state: FSMContext):
-    Logger.info(callback.from_user.id, "/admin -> admin_logs")
+    Logger.info(callback.from_user.id, "/admin -> logs")
+
     await callback.answer()
-    if not isinstance(callback.message, Message):
-        return
 
-    await state.set_state(Admin.logs)
-    await update_admin_menu(
-        callback.message,
+    await change_admin_menu(
+        callback,
         state,
-        user_manager,
-        query_manager,
-        config_manager,
-        log_manager,
-    )
-
-
-@router.callback_query(Admin.logs, F.data == "admin_logs_python")
-async def admin_logs_python(callback: CallbackQuery, state: FSMContext):
-    Logger.info(callback.from_user.id, "/admin -> admin_logs -> python")
-    await callback.answer()
-    if not isinstance(callback.message, Message):
-        return
-
-    await state.set_state(Admin.log_format)
-    await state.update_data(log_type=LogType.PYTHON.value)
-    await update_admin_menu(
-        callback.message,
-        state,
-        user_manager,
-        query_manager,
-        config_manager,
-        log_manager,
-    )
-
-
-@router.callback_query(Admin.logs, F.data == "admin_logs_cpp")
-async def admin_logs_cpp(callback: CallbackQuery, state: FSMContext):
-    Logger.info(callback.from_user.id, "/admin -> admin_logs -> cpp")
-    await callback.answer()
-    if not isinstance(callback.message, Message):
-        return
-
-    await state.set_state(Admin.log_format)
-    await state.update_data(log_type=LogType.CPP.value)
-    await update_admin_menu(
-        callback.message,
-        state,
-        user_manager,
-        query_manager,
-        config_manager,
-        log_manager,
+        Admin.log_format,
     )
 
 
 @router.callback_query(Admin.log_format, F.data == "admin_log_latest")
-async def admin_log_latest(callback: CallbackQuery, state: FSMContext):
+async def admin_log_latest(callback: CallbackQuery):
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
 
-    data = await state.get_data()
-    log_type_value = data.get("log_type")
-    if log_type_value is None:
-        Logger.error(callback.from_user.id, "Не выбран тип логов")
-        await callback.message.answer("❌ Тип логов не выбран.")
-        return
-
-    log_type = LogType(log_type_value)
-    Logger.info(callback.from_user.id, f"/admin -> последний {log_type.value} лог")
-
     try:
-        log = log_manager.get_latest_log(log_type)
+        log = log_manager.get_latest_log()
+
         if log is None:
             await callback.message.answer("❌ Логов пока нет.")
             return
+
         await callback.message.answer_document(
-            FSInputFile(log), caption=f"📜 {log.name}"
+            FSInputFile(log),
+            caption=f"📜 {log.name}",
         )
+
         Logger.info(
             callback.from_user.id,
-            f"Отправлен последний {log_type.value} лог: {log.name}",
+            f"Отправлен последний лог: {log.name}",
         )
+
     except Exception as exc:
         Logger.error(
             callback.from_user.id,
-            "Ошибка отправки последнего лога " f"[{type(exc).__name__}]: {exc}",
+            f"Ошибка отправки последнего лога " f"[{type(exc).__name__}]: {exc}",
         )
+
         await callback.message.answer("❌ Не удалось отправить лог.")
 
 
 @router.callback_query(Admin.log_format, F.data == "admin_log_last_5")
-async def admin_log_last_5(callback: CallbackQuery, state: FSMContext):
+async def admin_log_last_5(callback: CallbackQuery):
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
-    data = await state.get_data()
-    log_type_value = data.get("log_type")
 
-    if log_type_value is None:
-        await callback.message.answer("❌ Тип логов не выбран.")
-        return
-
-    log_type = LogType(log_type_value)
-    Logger.info(callback.from_user.id, f"/admin -> последние 5 {log_type.value} логов")
+    archive_path = None
 
     try:
-        logs = log_manager.get_last_logs(log_type, 5)
+        logs = log_manager.get_last_logs(5)
+
         if not logs:
             await callback.message.answer("❌ Логов пока нет.")
             return
-        archive_path = log_manager.create_archive(log_type, logs)
+
+        archive_path = log_manager.create_archive(logs)
+
         await callback.message.answer_document(
-            FSInputFile(archive_path), caption=f"📦 Последние {len(logs)} логов"
+            FSInputFile(archive_path),
+            caption=f"📦 Последние {len(logs)} логов",
         )
+
+        Logger.info(
+            callback.from_user.id,
+            f"Отправлены последние логи: {len(logs)} файлов",
+        )
+
     except Exception as exc:
         Logger.error(
             callback.from_user.id,
-            "Ошибка отправки последних 5 логов " f"[{type(exc).__name__}]: {exc}",
+            f"Ошибка отправки последних логов " f"[{type(exc).__name__}]: {exc}",
         )
+
         await callback.message.answer("❌ Не удалось отправить логи.")
+
+    finally:
+        if archive_path is not None:
+            archive_path.unlink(missing_ok=True)
 
 
 @router.callback_query(Admin.log_format, F.data == "admin_log_today")
-async def admin_log_today(callback: CallbackQuery, state: FSMContext):
+async def admin_log_today(callback: CallbackQuery):
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
 
-    data = await state.get_data()
-    log_type_value = data.get("log_type")
-    if log_type_value is None:
-        await callback.message.answer("❌ Тип логов не выбран.")
-        return
-
-    log_type = LogType(log_type_value)
-    Logger.info(callback.from_user.id, f"/admin -> логи за сегодня ({log_type.value})")
+    archive_path = None
 
     try:
-        logs = log_manager.get_today_logs(log_type)
+        logs = log_manager.get_today_logs()
+
         if not logs:
             await callback.message.answer("❌ За сегодня логов нет.")
             return
-        archive_path = log_manager.create_archive(log_type, logs)
+
+        archive_path = log_manager.create_archive(logs)
+
         await callback.message.answer_document(
-            FSInputFile(archive_path), caption=f"📦 Последние {len(logs)} логов"
+            FSInputFile(archive_path),
+            caption=f"📦 Логи за сегодня: {len(logs)} файлов",
         )
-        Logger.info(callback.from_user.id, f"Отправлено логов за сегодня: {len(logs)}")
+
+        Logger.info(
+            callback.from_user.id,
+            f"Отправлено логов за сегодня: {len(logs)}",
+        )
+
     except Exception as exc:
         Logger.error(
             callback.from_user.id,
-            "Ошибка отправки логов за сегодня " f"[{type(exc).__name__}]: {exc}",
+            f"Ошибка отправки логов за сегодня " f"[{type(exc).__name__}]: {exc}",
         )
+
         await callback.message.answer("❌ Не удалось отправить логи.")
+
+    finally:
+        if archive_path is not None:
+            archive_path.unlink(missing_ok=True)
 
 
 @router.callback_query(Admin.log_format, F.data == "admin_log_all")
-async def admin_log_all(callback: CallbackQuery, state: FSMContext):
+async def admin_log_all(callback: CallbackQuery):
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
 
-    data = await state.get_data()
-    log_type_value = data.get("log_type")
-    if log_type_value is None:
-        await callback.message.answer("❌ Тип логов не выбран.")
-        return
-
-    log_type = LogType(log_type_value)
-    Logger.info(callback.from_user.id, f"/admin -> все {log_type.value} логи")
     archive_path = None
+
     try:
-        logs = log_manager.get_logs(log_type)
+        logs = log_manager.get_logs()
+
         if not logs:
             await callback.message.answer("❌ Логов пока нет.")
             return
-        archive_path = log_manager.create_archive(log_type, logs)
+
+        archive_path = log_manager.create_archive(logs)
+
         await callback.message.answer_document(
             FSInputFile(archive_path),
-            caption=(f"📦 Все {log_type.value} логи\n" f"Файлов: {len(logs)}"),
+            caption=f"📦 Все Python-логи\nФайлов: {len(logs)}",
         )
+
         Logger.info(
             callback.from_user.id,
-            f"Отправлен архив {archive_path}, " f"файлов: {len(logs)}",
+            f"Отправлен архив всех логов: {len(logs)} файлов",
         )
+
     except Exception as exc:
         Logger.error(
             callback.from_user.id,
-            "Ошибка отправки всех логов " f"[{type(exc).__name__}]: {exc}",
+            f"Ошибка отправки всех логов " f"[{type(exc).__name__}]: {exc}",
         )
+
         await callback.message.answer("❌ Не удалось подготовить архив логов.")
+
     finally:
         if archive_path is not None:
-            try:
-                archive_path.unlink(missing_ok=True)
-            except Exception as exc:
-                Logger.warning(
-                    callback.from_user.id, f"Не удалось удалить временный архив: {exc}"
-                )
+            archive_path.unlink(missing_ok=True)
 
 
 @router.callback_query(
-    StateFilter(Admin.users, Admin.queries, Admin.limits, Admin.logs),
+    StateFilter(
+        Admin.users,
+        Admin.queries,
+        Admin.limits,
+        Admin.log_format,
+    ),
     F.data == "admin_back",
 )
 async def admin_back(callback: CallbackQuery, state: FSMContext):
     Logger.info(callback.from_user.id, "/admin -> back")
+
     await callback.answer()
+
     if not isinstance(callback.message, Message):
         return
 
     await state.set_state(Admin.main)
-    await update_admin_menu(
-        callback.message,
-        state,
-        user_manager,
-        query_manager,
-        config_manager,
-        log_manager,
-    )
 
-
-@router.callback_query(Admin.log_format, F.data == "admin_logs")
-async def admin_log_format_back(callback: CallbackQuery, state: FSMContext):
-    Logger.info(callback.from_user.id, "/admin -> log_format -> back")
-    await callback.answer()
-    if not isinstance(callback.message, Message):
-        return
-
-    await state.set_state(Admin.logs)
-    await state.update_data(log_type=None)
     await update_admin_menu(
         callback.message,
         state,

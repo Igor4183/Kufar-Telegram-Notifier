@@ -8,34 +8,34 @@ class Ad:
     account_id: str
     ad_id: int
     json_id: int
-    ad_link: str
-    type: str
-    subject: str
+    ad_link: str | None
+    type: str | None
+    subject: str | None
     body: str | None
     body_short: str | None
     list_time: datetime
-    price_byn: str
-    price_usd: str
-    currency: str
-    remuneration_type: str
-    category: str
-    company_ad: bool
+    price_byn: str | None
+    price_usd: str | None
+    currency: str | None
+    remuneration_type: str | None
+    category: str | None
+    company_ad: bool | None
     images: list[Image]
     account_parameters: list[AccountParameter]
     ad_parameters: list[AdParameter]
-    is_mine: bool
-    phone_hidden: bool
+    is_mine: bool | None
+    phone_hidden: bool | None
 
     @property
-    def id(self) -> int:
+    def id(self) -> int | None:
         return self.ad_id
 
     @property
-    def title(self) -> str:
+    def title(self) -> str | None:
         return self.subject
 
     @property
-    def link(self) -> str:
+    def link(self) -> str | None:
         return self.ad_link
 
     def get_parameter(self, parameter: str) -> AdParameter | None:
